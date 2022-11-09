@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="/img/logoum2.ico" type="image/x-icon">
 
         <title>@yield('title')</title>
 
@@ -25,7 +26,7 @@
                   </a>
                   <ul class="navbar-nav">
                     @auth
-                    @if(auth()->user()->perfil_id==2)
+                    @if(auth()->user()->perfil_id==3)
                         <li class="nav-item">
                             <a href="/" class="nav-link">Cursos</a>
                         </li>
@@ -58,7 +59,11 @@
                         </li>
                       @endif
                     <li class="nav-item">
-                        <a href="/" class="nav-link">Sair</a>
+                        <form action="/logout" method="POST">
+                            @csrf
+                            <a href="/logout" class="nav-link" onclick="event.preventDefault();
+                                this.closest('form').submit();">Sair</a>
+                        </form>
                       </li>
                     @endauth
                     @guest

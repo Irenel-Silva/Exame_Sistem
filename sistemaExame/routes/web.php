@@ -17,8 +17,8 @@ Route::get('/', [ExameController::class, 'index']);
 /*Route::get('/', function () {
     return view('welcome');
 });*/
-Route::get('/prova/criar', [ExameController::class, 'criado']);
-Route::get('/prova/realizar', [ExameController::class, 'realizado']);
+Route::get('/prova/criar', [ExameController::class, 'criado'])->middleware('auth');
+Route::get('/prova/realizar', [ExameController::class, 'realizado'])->middleware('auth');
 Route::post('/prova', [ExameController::class, 'store']);
 
 Route::middleware([
@@ -43,18 +43,18 @@ Route::middleware([
 });*/
 Route::middleware(['admin'])->group(function () {
     Route::get('admin', function () {
-        return view('welcome');
+        return view('dashboard');
     });
 });
 
 Route::middleware(['estudante'])->group(function () {
     Route::get('estudante', function () {
-        return view('welcome');
+        return view('dashboard');
     });
 });
 
 Route::middleware(['professor'])->group(function () {
     Route::get('professor', function () {
-        return view('welcome');
+        return view('dashboard');
     });
 });

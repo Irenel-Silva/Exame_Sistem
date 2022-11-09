@@ -8,7 +8,7 @@
     <form action="/prova/criar" method="POST">
       @csrf
       <div class="form-group">
-        <label for="title">Título da Prova</label>
+        <label for="title">Tipo de Prova</label>
         <select name="nome" id="name" class="form-control">
           <option value="teste">Teste</option>
           <option value="exame">Exame</option>
