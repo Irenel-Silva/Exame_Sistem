@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->foreignId('perfil_id')
-            ->constrained('perfil');
+        Schema::create('avaliacaos_users', function (Blueprint $table) {
+            $table->foreignId('users_id')->constrained('users');
+            $table->foreignId('avaliacaos_id')->constrained('avaliacaos');
+            $table->timestamps();
         });
     }
 
@@ -27,11 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->foreignId('perfil_id')
-            ->constrained('perfil')
-            ->onDelete('cascade');
-        });
+        Schema::dropIfExists('avaliacaos_users');
     }
 };

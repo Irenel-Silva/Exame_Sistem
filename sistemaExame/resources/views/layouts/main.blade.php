@@ -26,7 +26,7 @@
                   </a>
                   <ul class="navbar-nav">
                     @auth
-                    @if(auth()->user()->perfil_id==3)
+                    @if(auth()->user()->perfis_id==1)
                         <li class="nav-item">
                             <a href="/" class="nav-link">Cursos</a>
                         </li>
@@ -34,7 +34,7 @@
                             <a href="/prova/realizar" class="nav-link">Departamentos</a>
                         </li>
                     @endif
-                      @if(auth()->user()->perfil_id==2)
+                      @if(auth()->user()->perfis_id==3)
                         <li class="nav-item">
                             <a href="/" class="nav-link">Resultados</a>
                         </li>
@@ -42,12 +42,12 @@
                             <a href="/prova/realizar" class="nav-link">Realizar</a>
                         </li>
                       @endif
-                      @if(auth()->user()->perfil_id==1)
+                      @if(auth()->user()->perfis_id==2)
                         <li class="nav-item">
                                  <a href="/prova/criar" class="nav-link">Prova</a>
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a href="/prova/criar" class="nav-link">Questões</a>
+                                    <a href="/prova/quest" class="nav-link">Questões</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/prova/criar" class="nav-link">Elaborar</a>
@@ -57,6 +57,9 @@
                                  </li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a href="/impressao" class="nav-link">Visualizar</a>
+                         </li>
                       @endif
                     <li class="nav-item">
                         <form action="/logout" method="POST">

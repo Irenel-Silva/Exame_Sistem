@@ -29,7 +29,7 @@ class User extends Authenticatable
         'password',
         'numero_aluno',
         'numero_professor',
-        'perfil_id',
+        'perfis_id',
     ];
 
     /**
@@ -65,5 +65,14 @@ class User extends Authenticatable
 
     public function perfil(){
         return $this->belongsTo('App\Models\Perfil');
+    }
+
+    public function enunciados(){
+        return $this->belongsToMany('App\Models\Avaliacao');
+    }
+
+
+    public function resultado(){
+        return $this->belongsTo('App\Models\Resultados');
     }
 }

@@ -18,8 +18,12 @@ Route::get('/', [ExameController::class, 'index']);
     return view('welcome');
 });*/
 Route::get('/prova/criar', [ExameController::class, 'criado'])->middleware('auth');
+//Route::post('/prova/juntar{id}', [ExameController::class, 'juntarPA'])->middleware('auth');
 Route::get('/prova/realizar', [ExameController::class, 'realizado'])->middleware('auth');
+Route::get('/impressao', [ExameController::class, 'testes'])->middleware('auth');
 Route::post('/prova', [ExameController::class, 'store']);
+Route::get('/prova/juntarPA', [ExameController::class, 'juntos'])->middleware('auth');
+Route::get('/prova/quest', [ExameController::class, 'quest'])->middleware('auth');
 
 Route::middleware([
     'auth:sanctum',
@@ -58,3 +62,5 @@ Route::middleware(['professor'])->group(function () {
         return view('dashboard');
     });
 });
+
+

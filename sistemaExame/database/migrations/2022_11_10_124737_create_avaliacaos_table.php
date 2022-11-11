@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('avaliacao', function (Blueprint $table) {
+        Schema::create('avaliacaos', function (Blueprint $table) {
             $table->id();
             $table->string('tipo',10);
             $table->integer('duracao');
@@ -22,8 +22,7 @@ return new class extends Migration
             $table->integer('qtidade_questoes');
             $table->date('data');
             $table->foreignId('uc_id')
-            ->constrained('uc');
-
+            ->constrained('ucs');
             $table->timestamps();
         });
     }
@@ -35,11 +34,12 @@ return new class extends Migration
      */
     public function down()
     {
-
-        Schema::dropIfExists('avaliacao', function (Blueprint $table) {
+        Schema::dropIfExists('avaliacaos', function (Blueprint $table) {
             $table->foreignId('uc_id')
-            ->constrained('uc')
+            ->constrained('ucs')
             ->onDelete('cascade');
+
+
         });
     }
 };
