@@ -85,9 +85,12 @@ class ExameController extends Controller
 
      }
 
-     public function juntos(){
+     public function juntos($id){
+        $user= auth()->user();
+        $user->enunciados()->attach($id);
+        $avaliar=Avaliacao::findOrFail($id);
 
-            return view('dashboard');
+            return view('dashboard')->with('Dados armazenados na tabela M-M(avaliacaos-users');
 
      }
 
