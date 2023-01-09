@@ -33,15 +33,15 @@
                                 <td>{{ $vi->nomeu }}</td>
                                 <td>{{ $vi->data }}</td>
                                 <td>{{ $vi->duracao }}</td>
-                                <?php $hoje= strtotime(date("Y-m-d")); date_default_timezone_set('Europe/Lisbon'); $tempo= time() echo $tempo ?>
+                                <?php $hoje= strtotime(date("Y-m-d")); date_default_timezone_set('Europe/Lisbon'); $tempo= time() ?>
 
-                                @if($vi->data >= $hoje  && $tempo== $vi->hora )
+                                @if($vi->data >= $hoje)
                                     <td><a style="color: aquamarine;">Activo</a></td>
                                 @else
                                     <td>Inactivo</td>
                                 @endif
 
-                                @if($vi->data == $hoje  && $tempo== $vi->hora  )
+                                @if($vi->data >= $hoje  && $tempo>= $vi->hora  )
                                     <td><a href="/alunos/provaaluno/{{ $vi->idav }}">Disponível</a></td>
                                 @else
                                     <td><a style="color: darkred;">Indisponível</a></td>

@@ -17,13 +17,21 @@
     @if($existe=='sim')
         <label><h4> Aluno <?php echo auth()->user()->name ?> já tem a Prova feita </h4></label>
     @else
+
         @foreach ($prova as $pro)
-            @while ($cont==0)
+
+            @if($pro->idav==$provado)
+                @while ($cont==0)
+
                 <h4 class="text-left">{{ $pro->nomeu }}</h4><br>
                 <h4 class="text-left">{{$pro->data}}</h4><br>
                 <h4 class="text-left">{{$pro->duracao}}</h4><br>
                 <?php $cont++?>
-           @endwhile
+                <div class="form-group" id="timer">
+                    <input type="hidden" id="duracao" name="duracao" value="{{ $pro->duracao }}">
+                </div>
+                @endwhile
+            @endif
         @endforeach
         </p>
         <br>
@@ -57,7 +65,7 @@
          </div>
         </form>
     @endif
-
+    <script src="js/crono.js" defer></script>
 
 
 
