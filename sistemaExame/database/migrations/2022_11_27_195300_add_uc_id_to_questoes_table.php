@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('avaliacaos_users', function (Blueprint $table) {
-            $table->foreignId('users_id')->constrained('users');
-            $table->foreignId('avaliacaos_id')->constrained('avaliacaos');
-            $table->timestamps();
+        Schema::table('questoes', function (Blueprint $table) {
+            //
+            $table->foreignId('uc_id')
+            ->constrained('ucs');
         });
     }
 
@@ -27,6 +27,11 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('avaliacaos_users');
+        Schema::table('questoes', function (Blueprint $table) {
+            //
+            $table->foreignId('uc_id')
+            ->constrained('ucs')
+            ->onDelete('cascade');
+        });
     }
 };

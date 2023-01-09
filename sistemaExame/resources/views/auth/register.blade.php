@@ -6,7 +6,7 @@
 
         <x-jet-validation-errors class="mb-4" />
 
-        <form method="POST" action="{{ route('register') }}" x-data="{perfis_id:2}">
+        <form method="POST" action="{{ route('register') }}" x-data="{perfis_id:0}">
             @csrf
 
             <div>
@@ -32,9 +32,10 @@
             <div class="mt-4">
                 <x-jet-label for="perfis_id" value="{{ __('Registrar Como:') }}" />
                 <select name="perfis_id" x-model="perfis_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                    <option value="1">Admin</option>
+                    <option value="0">Selecione o perfil</option>
                     <option value="2">Professor</option>
                     <option value="3">Estudante</option>
+                    <option value="1">Admin</option>
 
                    <!-- <option value="3">Admin</option>-->
 
@@ -47,10 +48,6 @@
                 <x-jet-input id="numero_aluno" class="block mt-1 w-full" type="text" name="numero_aluno" :value="old('numero_aluno')" />
             </div>
             <div class="mt-4" x-show="perfis_id == 2">
-                <x-jet-label for="numero_professor" value="{{ __('Numero do Professor') }}" />
-                <x-jet-input id="numero_professor" class="block mt-1 w-full" type="text" name="numero_professor" :value="old('numero_professor')" />
-            </div>
-            <div class="mt-4" x-show="perfis_id == 1">
                 <x-jet-label for="numero_professor" value="{{ __('Numero do Professor') }}" />
                 <x-jet-input id="numero_professor" class="block mt-1 w-full" type="text" name="numero_professor" :value="old('numero_professor')" />
             </div>
@@ -78,7 +75,7 @@
                 </a>
 
                 <x-jet-button class="ml-4">
-                    {{ __('Registar') }}
+                    {{ __('Register') }}
                 </x-jet-button>
             </div>
         </form>

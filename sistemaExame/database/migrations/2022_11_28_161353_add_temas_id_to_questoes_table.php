@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ucs', function (Blueprint $table) {
-            $table->id();
-            $table->string('nomeu',60);
-            $table->integer('qcreditos');
-            $table->integer('carga_horaria');
-            $table->integer('qprovas');
-            $table->timestamps();
+        Schema::table('questoes', function (Blueprint $table) {
+            //
+            $table->foreignId('tema_id')
+            ->constrained('temas');
         });
     }
 
@@ -30,6 +27,11 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ucs');
+        Schema::table('questoes', function (Blueprint $table) {
+            //
+            $table->foreignId('tema_id')
+            ->constrained('temas')
+            ->onDelete('cascade');
+        });
     }
 };

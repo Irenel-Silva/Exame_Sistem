@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ucs', function (Blueprint $table) {
+        Schema::create('temas', function (Blueprint $table) {
             $table->id();
-            $table->string('nomeu',60);
-            $table->integer('qcreditos');
-            $table->integer('carga_horaria');
-            $table->integer('qprovas');
+            $table->string('titulo');
+            $table->foreignId('uc_id')
+            ->constrained('ucs');
             $table->timestamps();
         });
     }
@@ -30,6 +29,11 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ucs');
+        Schema::dropIfExists('temas', function (Blueprint $table) {
+            $table->foreignId('uc_id')
+            ->constrained('ucs')
+            ->onDelete('cascade');
+
+        });
     }
 };

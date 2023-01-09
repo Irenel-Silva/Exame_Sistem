@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Perfil extends Model
+class Ucs_users extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'nomep',
-
+        'uc_id',
+        'user_id',
     ];
-
-    public function users(){
+    public function cadastra(){
         return $this->hasMany('App\Models\User');
+    }
+    public function registra(){
+        return $this->hasMany('App\Models\Uc');
     }
 }

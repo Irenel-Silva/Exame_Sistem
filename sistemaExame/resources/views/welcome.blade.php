@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Prova')
+@section('title', 'Avaliacão')
 
 @section('content')
 <div id="search-container" class="col-md-12">

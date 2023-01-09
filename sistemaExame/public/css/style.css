@@ -28,6 +28,31 @@
     padding: 0;
   }
 
+  .btn-add {
+    background-color:#CCC;
+    border: 2px solid #CCC;
+    margin-top: 2px;
+  }
+
+  .btn-add:hover {
+    background-color: #CCC;
+    border-color: #CCC;
+    margin-top: 2px;
+  }
+
+  .btn-remove {
+    background-color:#CCC;
+    border: 2px solid #CCC;
+    margin-top: 2px;
+  }
+
+  .btn-remove:hover {
+    background-color: #CCC;
+    border-color: #CCC;
+    margin-top: 2px;
+  }
+
+
   .btn-primary {
     background-color: #F2A340;
     border: 2px solid #C28008;
@@ -36,6 +61,31 @@
   .btn-primary:hover {
     background-color: #C28008;
     border-color: #C28008;
+  }
+
+
+
+  .msg {
+    background-color: #D4EDDA;
+    color: #155724;
+    border: 1px solid #C3E6CB;
+    width: 100%;
+    margin-bottom: 0;
+    text-align: center;
+    padding: 10px;
+
+  }
+
+
+  .nomeado {
+    background-color: rgba(152, 27, 31, .75);
+    color:#FFF;
+    border: 0px solid rgba(152, 27, 31, .75);
+    width: 100%;
+    margin-bottom: 0;
+    text-align: center;
+    padding: 0px;
+
   }
 
   /* navbar */
@@ -50,7 +100,10 @@
     /*width: 100%;*/
     /*position: absolute;*/
   }
+#nomear {
+    font-size: 16px;
 
+}
 /*#navbar div {
     width: 100%;
     position: absolute;
@@ -58,6 +111,7 @@
   #navbar a {
     font-size: 16px;
     color: #FFF;
+
   }
 
   #navbar a:hover {
@@ -156,6 +210,19 @@
     color: #757575;
   }
 
+/* Dashboard */
+.dashboard-title-container {
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.dashboard-events-container th {
+    width: 25%;
+}
+
+.dashboard-events-container form {
+    display: inline-block;
+}
   /* footer */
   footer {
     text-align: center;

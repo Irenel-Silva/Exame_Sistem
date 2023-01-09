@@ -15,15 +15,19 @@ return new class extends Migration
     {
         Schema::create('avaliacaos', function (Blueprint $table) {
             $table->id();
-            $table->string('tipo',10);
-            $table->integer('duracao');
-            $table->integer('pontuacao');
-            $table->integer('pontuacao_min');
+            $table->string('tipoa',10);
+            $table->float('pontuacao');
+            $table->float('pontuacao_min');
             $table->integer('qtidade_questoes');
             $table->date('data');
+            $table->time('hora');
+            $table->integer('duracao');
+            $table->string('prova_id',255);
             $table->foreignId('uc_id')
             ->constrained('ucs');
             $table->timestamps();
+            $table->foreignId('users_id')
+            ->constrained('users');
         });
     }
 
@@ -37,6 +41,9 @@ return new class extends Migration
         Schema::dropIfExists('avaliacaos', function (Blueprint $table) {
             $table->foreignId('uc_id')
             ->constrained('ucs')
+            ->onDelete('cascade');
+            $table->foreignId('users_id')
+            ->constrained('users')
             ->onDelete('cascade');
 
 

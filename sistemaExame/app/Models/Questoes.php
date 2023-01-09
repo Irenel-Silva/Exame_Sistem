@@ -9,7 +9,7 @@ class Questoes extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'tipo',
+        'tipoq',
         'questao',
         'opcaoA',
         'opcaoB',
@@ -17,11 +17,23 @@ class Questoes extends Model
         'opcaoD',
         'opcaoE',
         'opcaoF',
-        'resposta',
+        'respostaq',
         'pontuacao_questao',
+        'uc_id',
     ];
 
     public function modelacoes(){
         return $this->belongsToMany('App\Models\Modelo');
+    }
+    public function uc(){
+        return $this->belongsTo('App\Models\Uc');
+    }
+    public function tema(){
+        return $this->belongsTo('App\Models\Tema');
+    }
+
+
+    public function avaliacoes(){
+        return $this->belongsToMany('App\Models\Avaliacao');
     }
 }

@@ -15,7 +15,12 @@
 
         <!-- CSS da aplicação -->
         <link rel="stylesheet" href="/css/style.css">
-        <script src="/js/scripts.js"></script>
+        <!--<script src="/js/scripts.js"></script>-->
+        <!-- Ajax Jquery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- Icones -->
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     </head>
     <body>
         <header>
@@ -39,27 +44,45 @@
                             <a href="/" class="nav-link">Resultados</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/prova/realizar" class="nav-link">Realizar</a>
+                            <a href="/alunos/veraluno" class="nav-link">ver</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/alunos/provaaluno" class="nav-link">Realizar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/inscricaoucaluno/inscricaouc" class="nav-link">Inscrição</a>
                         </li>
                       @endif
                       @if(auth()->user()->perfis_id==2)
+                      <li class="nav-item">
+                        <a href="/resultados/resultado" class="nav-link">Qualificação</a>
+                   <ul class="navbar-nav">
+                       <li class="nav-item">
+                           <a href="/resultados/addresultado" class="nav-link">Atribuir</a>
+                       </li>
+                   </ul>
+               </li>
+                      <li class="nav-item">
+                        <a href="/prof/verpprof" class="nav-link">Ver</a>
+                     </li>
                         <li class="nav-item">
-                                 <a href="/prova/criar" class="nav-link">Prova</a>
+                                 <a href="/prof/addqa" class="nav-link">Prova</a>
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a href="/prova/quest" class="nav-link">Questões</a>
+                                    <a href="/questionarios/questo" class="nav-link">Questão</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/prova/criar" class="nav-link">Elaborar</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="/prova/criar" class="nav-link">Visualizar</a>
-                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="/impressao" class="nav-link">Visualizar</a>
+                            <a href="/ucs/uc" class="nav-link">Uc</a>
                          </li>
+                        <li class="nav-item">
+                            <a href="/temas/tema" class="nav-link">Tema</a>
+                         </li>
+
                       @endif
                     <li class="nav-item">
                         <form action="/logout" method="POST">
@@ -81,7 +104,27 @@
                 </div>
               </nav>
         </header>
-      @yield('content')
+        <main>
+            @auth
+            <div class="container-fluid">
+                <div class="row">
+                    <p  class="nomeado">
+                        Bem Vindo, {{ Auth::user()->name }}
+                      </p>
+                </div>
+            </div>
+            @endauth
+            <div class="container-fluid">
+                <div class="row">
+                    @if(session('msg'))
+                        <p class="msg">{{ session('msg') }}</p>
+
+                    @endif
+                </div>
+                @yield('content')
+            </div>
+        </main>
+
       <footer>
         <p>DI UMINHO&copy; 2022</p>
       </footer>

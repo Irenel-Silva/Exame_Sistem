@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Resultados extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'avaliacaos_id',
+        'modelo_id',
+        'pontuacaototal_aluno',
+        'status',
+        'user_id',
+    ];
     public function Estudante(){
         return $this->belongsTo('App\Models\User');
     }

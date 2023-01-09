@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
-{ // Corresponde a todas as provas criadas
+{
     /**
      * Run the migrations.
      *
@@ -13,17 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('modelos', function (Blueprint $table) {
+        Schema::create('avaliacaos_questoes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('avaliacaos_id')
             ->constrained('avaliacaos');
-            //$table->string('qa');// qa-> Questão A
-            $table->string('respostam');
-            $table->float('pontuacaom');
-
-            $table->foreignId('user_id')
-            ->constrained('users');
-
+            $table->foreignId('questoes_id')
+            ->constrained('questoes');
             $table->timestamps();
         });
     }
@@ -35,15 +30,13 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('modelos', function (Blueprint $table) {
+        Schema::dropIfExists('avaliacaos_questoes', function (Blueprint $table) {
             $table->foreignId('avaliacaos_id')
             ->constrained('avaliacaos')
             ->onDelete('cascade');
-            $table->foreignId('user_id')
-            ->constrained('users')
+            $table->foreignId('questoes_id')
+            ->constrained('questoes')
             ->onDelete('cascade');
-
-
         });
     }
 };

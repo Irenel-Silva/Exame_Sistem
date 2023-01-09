@@ -9,7 +9,7 @@ class Uc extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'nome',
+        'nomeu',
         'qcreditos',
         'carga_horaria',
         'qprovas',
@@ -17,5 +17,16 @@ class Uc extends Model
 
     public function modelos(){
         return $this->hasMany('App\Models\Avaliacao');
+    }
+
+    public function perguntas(){
+        return $this->hasMany('App\Models\Questoes');
+    }
+
+    public function temas(){
+        return $this->hasMany('App\Models\Tema');
+    }
+    public function possui(){
+        return $this->belongstoMany('App\Models\User');
     }
 }

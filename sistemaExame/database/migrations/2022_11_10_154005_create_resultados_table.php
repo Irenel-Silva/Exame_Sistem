@@ -19,8 +19,6 @@ return new class extends Migration
             ->constrained('avaliacaos');
             $table->foreignId('user_id')
             ->constrained('users');
-            $table->foreignId('modelo_id')
-            ->constrained('modelos');
             $table->float('pontuacaototal_aluno');
             $table->string('status');
             $table->timestamps();
@@ -40,9 +38,6 @@ return new class extends Migration
             ->onDelete('cascade');
             $table->foreignId('user_id')
             ->constrained('users')
-            ->onDelete('cascade');
-            $table->foreignId('modelo_id')
-            ->constrained('modelos')
             ->onDelete('cascade');
 
         });

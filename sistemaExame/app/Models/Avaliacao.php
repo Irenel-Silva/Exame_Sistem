@@ -10,13 +10,16 @@ class Avaliacao extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tipo',
+        'tipoa',
         'duracao',
         'pontuacao',
         'pontuacao_min',
         'qtidade_questoes',
         'data',
+        'hora',
         'uc_id',
+        'user_id',
+        'prova_id',
     ];
 
 
@@ -24,8 +27,8 @@ class Avaliacao extends Model
         return $this->hasMany('App\Models\Modelo');
     }
 
-    public function utilizadores(){
-        return $this->belongsToMany('App\Models\User');
+    public function utilizador(){
+        return $this->belongsTo('App\Models\User');
     }
     public function uc(){
         return $this->belongsTo('App\Models\Uc');
@@ -33,6 +36,10 @@ class Avaliacao extends Model
 
     public function result(){
         return $this->hasMany('App\Models\Resultados');
+    }
+
+    public function questoes(){
+        return $this->belongsToMany('App\Models\Questoes');
     }
 
 }

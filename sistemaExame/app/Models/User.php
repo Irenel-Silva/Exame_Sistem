@@ -75,4 +75,11 @@ class User extends Authenticatable
     public function resultado(){
         return $this->belongsTo('App\Models\Resultados');
     }
+
+    public function avaliacao(){
+        return $this->hasMany('App\Models\Modelo');
+    }
+    public function inscrito(){
+        return $this->belongsToMany('App\Models\Uc');
+    }
 }

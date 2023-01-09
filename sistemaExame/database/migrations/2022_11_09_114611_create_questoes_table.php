@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('questoes', function (Blueprint $table) {
             $table->id();
-            $table->string('tipo', 20);
+            $table->string('tipoq', 20);
             $table->string('questao', 150);
             $table->string('opcaoA')->nullable();
             $table->string('opcaoB')->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('opcaoD')->nullable();
             $table->string('opcaoE')->nullable();
             $table->string('opcaoF')->nullable();
-            $table->string('resposta');
+            $table->string('respostaq');
             $table->float('pontuacao_questao');
             $table->timestamps();
         });
