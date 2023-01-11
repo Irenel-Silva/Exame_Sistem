@@ -9,8 +9,6 @@
     <br>
     <br>
     <div class="col-md-10 offset-md-1 dashboard-events-container">
-
-
             <table class="table">
                 <thead>
                     <tr>
@@ -21,6 +19,7 @@
                         <th scope="col">Duração</th>
                         <th scope="col">Status</th>
                         <th scope="col">Atribuir resultado</th>
+                        <th scope="col">CRUD</th>
                     </tr>
 
                 </thead>
@@ -36,12 +35,15 @@
                                 <?php $hoje= strtotime(date("Y-m-d")); ?>
 
                                 @if($q->data >= $hoje )
-                                    <td><a style="color: aquamarine;">Feito</a></td>
-                                    <td><a href="/resultados/addresultado/{{ $q->id }}">Disponível</a></td>
+                                    <td><a style="color: aquamarine;">Por fazer</a></td>
+                                    <td><a href="/resultados/addresultado/{{ $q->idav }}">Disponível</a></td>
                                 @else
-                                    <td><a style="color:darkred;"> Por fazer</a></td>
+                                    <td><a style="color:darkred;">Feito </a></td>
                                     <td><a style="color: darkred;"> Indisponível</a></td>
                                 @endif
+                                <td>
+                                    <a href="/prova/editarprova/{{ $q->idav }}" class="btn btn-info edit-btn"><ion-icon name="create-outline"></ion-icon>Editar</a>
+                                </td>
                             </tr>
                         @endforeach
                 </body>

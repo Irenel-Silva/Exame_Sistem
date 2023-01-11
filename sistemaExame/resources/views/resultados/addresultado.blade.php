@@ -17,8 +17,7 @@
     <br>
     <br>
     <div class="col-md-10 offset-md-1 dashboard-events-container">
-
-
+        @endforeach
             <table class="table">
                 <thead>
                     <tr>
@@ -44,7 +43,11 @@
                                     <td>{{ $q->tipoq }}</td>
                                     <td>{{ $q->questao }}</td>
                                     <td>{{ $q->respostam }}</td>
-                                    <td>{{ $q->pontuacaom }}</td>
+                                    @if ($q->pontuacaom == 0)
+                                    <td><a style="color: darkred">{{ $q->pontuacaom }}</a></td>
+                                    @else
+                                    <td><a style="color:aquamarine">{{ $q->pontuacaom }}</a></td>
+                                    @endif
                                     <td>
                                         <a href="/alunos/editpontoresposta/{{ $q->idmo }}" class="btn btn-info edit-btn"><ion-icon name="create-outline"></ion-icon>Editar</a>
                                         <!--<form action="/alunos/" method="POST">

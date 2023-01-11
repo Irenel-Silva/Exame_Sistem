@@ -50,9 +50,15 @@ Route::get('/alunos/veraluno', [ExameController::class, 'veravaliacao'])->middle
 Route::get('/alunos/provaaluno/{id}', [ExameController::class, 'show'])->middleware('auth');
 
 Route::get('/resultados/addresultado/{id}', [ExameController::class, 'resultado'])->middleware('auth');
-Route::get('/resultados/resultado', [ExameController::class, 'showresultado'])->middleware('auth');
+
 
 Route::post('/resultados', [ExameController::class, 'storeresultado']);
+
+
+Route::get('/resultados/listaprovaprof', [ExameController::class, 'listarprova'])->middleware('auth');
+Route::get('/resultados/resultado/{id}', [ExameController::class, 'showresultado'])->middleware('auth');
+
+Route::get('/resultados/qualificacoes', [ExameController::class, 'showqualificacao'])->middleware('auth');
 
 Route::get('/inscricaoucaluno/inscricaouc', [ExameController::class, 'showinscricaouc'])->middleware('auth');
 
@@ -60,6 +66,10 @@ Route::post('/inscricaoucaluno', [ExameController::class, 'storeinscricaouc']);
 
 Route::get('/alunos/editpontoresposta/{id}', [ExameController::class, 'editpontoresposta'])->middleware('auth');
 Route::put('/alunos/updatepr/{id}', [ExameController::class, 'updatepr'])->middleware('auth');
+
+
+Route::get('/prova/editarprova/{id}', [ExameController::class, 'editprova'])->middleware('auth');
+Route::put('/prova/updateprova/{id}', [ExameController::class, 'updateprova'])->middleware('auth');
 
 //Route::post('/a', [ExameController::class, 'storeinscricaouc']);
 

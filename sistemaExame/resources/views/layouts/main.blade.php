@@ -41,27 +41,27 @@
                     @endif
                       @if(auth()->user()->perfis_id==3)
                         <li class="nav-item">
-                            <a href="/" class="nav-link">Resultados</a>
+                            <a href="/resultados/qualificacoes" class="nav-link">Resultados</a>
                         </li>
                         <li class="nav-item">
                             <a href="/alunos/veraluno" class="nav-link">ver</a>
                         </li>
-                        <li class="nav-item">
+                        <!--<li class="nav-item">
                             <a href="/alunos/provaaluno" class="nav-link">Realizar</a>
-                        </li>
+                        </li>-->
                         <li class="nav-item">
                             <a href="/inscricaoucaluno/inscricaouc" class="nav-link">Inscrição</a>
                         </li>
                       @endif
                       @if(auth()->user()->perfis_id==2)
                       <li class="nav-item">
-                        <a href="/resultados/resultado" class="nav-link">Qualificação</a>
-                   <ul class="navbar-nav">
-                       <li class="nav-item">
-                           <a href="/resultados/addresultado" class="nav-link">Atribuir</a>
-                       </li>
-                   </ul>
-               </li>
+                        <a href="/resultados/listaprovaprof" class="nav-link">Qualificação</a>
+                            <!--<ul class="navbar-nav">
+                                <li class="nav-item">
+                                <a href="/resultados/addresultado" class="nav-link">Atribuir</a>
+                                </li>
+                            </ul>-->
+                     </li>
                       <li class="nav-item">
                         <a href="/prof/verpprof" class="nav-link">Ver</a>
                      </li>

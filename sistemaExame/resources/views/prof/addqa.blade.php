@@ -24,20 +24,21 @@
                 </select>
             </div>
 
+
+
+
             <div class="form-group">
                 <label for="title">Data da avaliação</label>
                 <select name="avaliacao_id" id="avaliacao_id" class="form-control" required>
                     <option value="">Selecione a data</option>
-                        <?php $ident=0 ?>
+
                         @foreach ($avaliar as $av)
-                            @if($av->id!= $ident)
-                                <option value="{{ $av->id }}" @php $ident= $av->id  @endphp> {{ $av->data }}</option>
-                            @endif
-
+                            <option value="{{ $av->id }}"> {{ $av->data }}</option>
                         @endforeach
-
                 </select>
-
+                    <!--
+                        <input type="hidden" id="qquestoes" name="qquestoes" value="">
+                    -->
             </div>
 
 
@@ -49,9 +50,10 @@
                         @foreach ($temat as $t)
                             <option value="{{ $t->id }}">{{ $t->titulo }}</option>
                         @endforeach
-
                 </select>
             </div>
+
+
 
             <div class="form-group">
                 <label for="title">Questão da temática</label>
