@@ -71,6 +71,13 @@ Route::put('/alunos/updatepr/{id}', [ExameController::class, 'updatepr'])->middl
 Route::get('/prova/editarprova/{id}', [ExameController::class, 'editprova'])->middleware('auth');
 Route::put('/prova/updateprova/{id}', [ExameController::class, 'updateprova'])->middleware('auth');
 
+
+
+Route::get('/questionarios/verucquest', [ExameController::class, 'veruc'])->middleware('auth');
+Route::get('/questionarios/listaquest/{id}', [ExameController::class, 'listaquest'])->middleware('auth');
+Route::get('/questionarios/editquest/{id}', [ExameController::class, 'editquest'])->middleware('auth');
+Route::put('/questionarios/updatequest/{id}', [ExameController::class, 'updatequest'])->middleware('auth');
+
 //Route::post('/a', [ExameController::class, 'storeinscricaouc']);
 
 

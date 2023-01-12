@@ -19,7 +19,8 @@
                         <th scope="col">Duração</th>
                         <th scope="col">Status</th>
                         <th scope="col">Atribuir resultado</th>
-                        <th scope="col">CRUD</th>
+                        <th scope="col">CRUD Prova</th>
+                        <!--<th scope="col">CRUD Questões</th>-->
                     </tr>
 
                 </thead>

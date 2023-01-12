@@ -17,7 +17,6 @@
     <br>
     <br>
     <div class="col-md-10 offset-md-1 dashboard-events-container">
-        @endforeach
             <table class="table">
                 <thead>
                     <tr>

@@ -7,6 +7,7 @@
     <h1>Modelo de Avaliação</h1>
     <form action="/prova/updateprova/{{ $avaliacao->id }}" method="POST" enctype="multipart/form-data">
       @csrf
+      @method('PUT')
       <div class="form-group">
         <label for="title">Tipo de Prova</label>
         <input type="text" class="form-control" id="tipoa" name="tipoa" value="{{ $avaliacao->tipoa }}">

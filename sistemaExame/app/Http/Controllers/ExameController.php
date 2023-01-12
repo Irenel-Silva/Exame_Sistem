@@ -122,6 +122,19 @@ class ExameController extends Controller
      }
 
 
+     public function editquest($id){
+        $questoes= Questoes::findOrFail($id);
+        return view('questionarios.editquest', ['questoes'=>$questoes]);
+
+
+     }
+     public function updatequest(Request $request){
+        Questoes::findOrFail($request->id)->update($request->all());
+        return redirect('dashboard')->with('msg', 'Editado com sucesso!');
+
+     }
+
+
      public function pegar($id){
         $avaliar= Avaliacao::findOrFail($id);
         return view('/prova/juntarPA/{id}', ['avaliar'=>$avaliar]);
@@ -214,7 +227,7 @@ class ExameController extends Controller
      }
      public function verprova(){
         $user=auth()->user();
-        $quest=Questoes::all();
+        //$questoes=Questoes::all();
         //$quest= $this->quest;
         $tema=Tema::all();
         //$tema= $this->tema;
@@ -228,7 +241,7 @@ class ExameController extends Controller
         $quest= DB::select($sql);
         //$avaliar= Avaliacao::with('uc')->get();
 
-        return view('prof.verpprof', ['quest'=>$quest, /*'tema'=>$tema,'avaliar'=>$avaliar*/]);
+        return view('prof.verpprof', ['quest'=>$quest,  /*'tema'=>$tema,'avaliar'=>$avaliar*/]);
      }
 
 
@@ -244,6 +257,10 @@ class ExameController extends Controller
         return redirect('dashboard')->with('msg', 'Editado com sucesso!');
 
      }
+
+
+
+
      public function storetema(Request $request){
         $tema= new Tema;
         $tema->titulo =$request->titulo;
@@ -263,6 +280,31 @@ class ExameController extends Controller
 
         return redirect('dashboard')->with('msg', 'Armazenado com sucesso!');
      }
+
+
+
+     public function veruc(){
+        $ucs= Uc::all();
+        /*$user= auth()->user();
+        $sql= "select distinct * from ucs ";
+        $sql= $sql . " Where ucs.id= '$user->id' ";
+        $sql= $sql . " order by ucs.id ";
+        $ucs= DB::select($sql);*/
+        return view('questionarios.verucquest', ['ucs'=>$ucs]);
+     }
+
+
+     public function listaquest($id){
+        $sql= "select distinct ucs.id, ucs.nomeu, questoes.id as qid, questoes.questao, questoes.respostaq  from ucs, questoes ";
+        $sql= $sql . " Where ucs.id= '$id' ";
+        $sql= $sql . " and ucs.id= questoes.uc_id ";
+        $sql= $sql . " order by questoes.id ";
+        $qualificacaos= DB::select($sql);
+        return view('questionarios.listaquest', ['qualificacaos'=>$qualificacaos]);
+     }
+
+
+
 
 
      public function storeadd(Request $request){
@@ -322,7 +364,7 @@ class ExameController extends Controller
         $sql= $sql . " and avaliacaos_questoes.questoes_id= questoes.id ";
         $sql= $sql . " and questoes.uc_id= ucs.id ";
         $sql= $sql . " and ucs_users.uc_id= ucs.id ";
-        $sql= $sql . " and ucs_users.user_id= '$user' ";
+        $sql= $sql . " and ucs_users.user_id= '$user->id' ";
         $sql= $sql . " order by questoes.questao ";
         $prova= DB::select($sql);
 

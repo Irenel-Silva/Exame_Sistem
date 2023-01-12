@@ -21,7 +21,7 @@ class Avaliacao extends Model
         'user_id',
         'prova_id',
     ];
-
+    protected $guarded= [];
 
     public function modelos(){
         return $this->hasMany('App\Models\Modelo');

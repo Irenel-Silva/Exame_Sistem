@@ -21,7 +21,7 @@ class Questoes extends Model
         'pontuacao_questao',
         'uc_id',
     ];
-
+    protected $guarded= [];
     public function modelacoes(){
         return $this->belongsToMany('App\Models\Modelo');
     }

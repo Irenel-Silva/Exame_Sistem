@@ -69,13 +69,19 @@
                                  <a href="/prof/addqa" class="nav-link">Prova</a>
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a href="/questionarios/questo" class="nav-link">Questão</a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="/prova/criar" class="nav-link">Elaborar</a>
                                 </li>
                             </ul>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="/questionarios/questo" class="nav-link">Questão</a>
+                       <ul class="navbar-nav">
+                           <li class="nav-item">
+                               <a href="/questionarios/verucquest" class="nav-link">Ver</a>
+                           </li>
+                       </ul>
+                   </li>
                         <li class="nav-item">
                             <a href="/ucs/uc" class="nav-link">Uc</a>
                          </li>

@@ -5,6 +5,8 @@ function starttimer(duracao, display){
         segundos= parseInt(timer % 60, 10);
         minutos= minutos < 10 ? "0" + minutos : minutos;
         segundos= segundos < 10 ? "0" + segundos : segundos;
+
+        
         display.textContent= minutos + ":" + segundos;
         if(--timer <0){
             timer =duracao;
