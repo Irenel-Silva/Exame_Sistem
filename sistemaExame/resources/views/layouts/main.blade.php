@@ -64,6 +64,11 @@
                      </li>
                       <li class="nav-item">
                         <a href="/prof/verpprof" class="nav-link">Ver</a>
+                        <!--<ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a href="/alunos/veraluno" class="nav-link">Prova Publicar</a>
+                            </li>
+                        </ul>-->
                      </li>
                         <li class="nav-item">
                                  <a href="/prof/addqa" class="nav-link">Prova</a>

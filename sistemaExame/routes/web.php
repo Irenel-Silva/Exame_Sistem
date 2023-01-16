@@ -41,6 +41,9 @@ Route::get('/prof/verpprof', [ExameController::class, 'verprova'])->middleware('
 Route::post('/temas', [ExameController::class, 'storetema']);
 Route::post('/ucs', [ExameController::class, 'storeuc']);
 Route::post('/prof', [ExameController::class, 'storeadd']);
+Route::post('/prof', [ExameController::class, 'uploadfile'])->middleware('auth');
+
+
 
 Route::get('/alunos/provaaluno', [ExameController::class, 'realizaravaliacao'])->middleware('auth');
 
@@ -57,8 +60,16 @@ Route::post('/resultados', [ExameController::class, 'storeresultado']);
 
 Route::get('/resultados/listaprovaprof', [ExameController::class, 'listarprova'])->middleware('auth');
 Route::get('/resultados/resultado/{id}', [ExameController::class, 'showresultado'])->middleware('auth');
+Route::delete('/resultados/{id}', [ExameController::class, 'destroiresultado'])->middleware('auth');
+Route::get('resultados/export/{id}', [ExameController::class, 'export'])->middleware('auth');
+Route::get('resultados/exportcsv/{id}', [ExameController::class, 'exportcsv'])->middleware('auth');
+Route::get('resultados/exportpdf/{id}', [ExameController::class, 'exportpdf'])->middleware('auth');
+
+
 
 Route::get('/resultados/qualificacoes', [ExameController::class, 'showqualificacao'])->middleware('auth');
+
+/*Route::get('/resultados/viewresultado', [ExameController::class, 'viewresultado'])->middleware('auth');*/
 
 Route::get('/inscricaoucaluno/inscricaouc', [ExameController::class, 'showinscricaouc'])->middleware('auth');
 

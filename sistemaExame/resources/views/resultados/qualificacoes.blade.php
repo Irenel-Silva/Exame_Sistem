@@ -30,7 +30,11 @@
                                 <td>{{ $nota->tipoa }}</td>
                                 <td>{{ $nota->nomeu }}</td>
                                 <td>{{ $nota->data }}</td>
-                                <td>{{ $nota->pontuacaototal_aluno }}</td>
+                                @if ($nota->pontuacaototal_aluno < $nota->pontuacao_min)
+                                    <td><a style="color: darkred">{{ $nota->pontuacaototal_aluno }}</a></td>
+                                    @else
+                                    <td><a style="color:aquamarine">{{ $nota->pontuacaototal_aluno }}</a></td>
+                                    @endif
                                 <td>{{ $nota->status }}</td>
                             </tr>
                         @endforeach

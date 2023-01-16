@@ -18,6 +18,14 @@ use App\Models\Resultados;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use App\Exports\ResultadosExport;
+use App\Http\Requests\StoreUpdateAddQARequest;
+use App\Http\Requests\StoreUpdateAvaliacaoRequest;
+use App\Http\Requests\StoreUpdateInscricaoUCRequest;
+use App\Http\Requests\StoreUpdateQuestaoRequest;
+use App\Http\Requests\StoreUpdateTemaRequest;
+use App\Http\Requests\StoreUpdateUcRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExameController extends Controller
 {
@@ -43,12 +51,13 @@ class ExameController extends Controller
         return view('prova.realizar', ['user'=>$user, 'ucs'=>$ucs, 'avaliar'=>$avaliar]);
     }
 
-    public function store(Request $request){
+    public function store(StoreUpdateAvaliacaoRequest $request){
         $avalic= new Avaliacao;
 
         $ucs= new Uc;
+        $request->validated();
         $unique_id= uniqid('prova_id');
-        $avalic->tipoa =$request->tipo;
+        $avalic->tipoa =$request->tipoa;
         $avalic->duracao =$request->duracao;
         $avalic->uc_id =$request->uc_id;
         $avalic->pontuacao =$request->pontuacao;
@@ -102,9 +111,10 @@ class ExameController extends Controller
         return view('questionarios.questo', ['user'=>$user, 'ucs'=>$ucs, 'tema'=>$tema]);
      }
 
-     public function salvaquestao(Request $request){
+     public function salvaquestao(StoreUpdateQuestaoRequest $request){
         $questao= new Questoes;
-        $questao->tipoq= $request->tipo;
+        $request->validated();
+        $questao->tipoq= $request->tipoq;
         $questao->questao= $request->questao;
         $questao->opcaoA= $request->opcao1;
         $questao->opcaoB= $request->opcao2;
@@ -128,7 +138,8 @@ class ExameController extends Controller
 
 
      }
-     public function updatequest(Request $request){
+     public function updatequest(StoreUpdateQuestaoRequest $request){
+        $request->validated();
         Questoes::findOrFail($request->id)->update($request->all());
         return redirect('dashboard')->with('msg', 'Editado com sucesso!');
 
@@ -252,7 +263,8 @@ class ExameController extends Controller
 
 
      }
-     public function updateprova(Request $request){
+     public function updateprova(StoreUpdateAvaliacaoRequest $request){
+        $request->validated();
         Avaliacao::findOrFail($request->id)->update($request->all());
         return redirect('dashboard')->with('msg', 'Editado com sucesso!');
 
@@ -261,8 +273,9 @@ class ExameController extends Controller
 
 
 
-     public function storetema(Request $request){
+     public function storetema(StoreUpdateTemaRequest $request){
         $tema= new Tema;
+        $request->validated();
         $tema->titulo =$request->titulo;
         $tema->uc_id= $request->uc_id;
         $tema->save();
@@ -270,9 +283,11 @@ class ExameController extends Controller
         return redirect('dashboard')->with('msg', 'Armazenado com sucesso!');
      }
 
-     public function storeuc(Request $request){
+     public function storeuc(StoreUpdateUcRequest $request){
         $uc= new Uc;
-        $uc->nomeu =$request->nome;
+        $request->validated();
+        //$request->all();
+        $uc->nomeu =$request->nomeu;
         $uc->qcreditos= $request->qcreditos;
         $uc->carga_horaria =$request->carga_horaria;
         $uc->qprovas= $request->qprovas;
@@ -307,10 +322,9 @@ class ExameController extends Controller
 
 
 
-     public function storeadd(Request $request){
+     public function storeadd(StoreUpdateAddQARequest $request){
 
-
-
+        $request->validated();
         $avid=$request->avaliacao_id;
         $avque= $request->questoes_id;
         //$qq= $request->qquestoes;
@@ -481,6 +495,7 @@ class ExameController extends Controller
         $sql= $sql . " Where avaliacaos_questoes.avaliacaos_id= avaliacaos.id ";
         $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
         $sql= $sql . " and avaliacaos.id= '$prova_id' ";
+        //$sql= $sql . " and avaliacaos.users_id= '$user->id' ";
         $sql= $sql . " and avaliacaos_questoes.questoes_id= questoes.id ";
         $sql= $sql . " and questoes.uc_id= ucs.id ";
         $sql= $sql . " order by questoes.id ";
@@ -494,14 +509,14 @@ class ExameController extends Controller
 
      public function resultado($prova_id){
         $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.data, avaliacaos.hora, avaliacaos.duracao,
-                avaliacaos.pontuacao_min, ucs.id as iduc, ucs.nomeu, users.id as idut, users.name, modelos.id as idmo,
+                avaliacaos.pontuacao_min,avaliacaos.qtidade_questoes, ucs.id as iduc, ucs.nomeu, users.id as idut, users.name, modelos.id as idmo,
                  modelos.user_id, modelos.avaliacaos_id, modelos.respostam, modelos.pontuacaom,  questoes.id as idque,
                  questoes.tipoq, questoes.questao, questoes.respostaq, questoes.pontuacao_questao
                  from questoes, modelos, users, ucs, avaliacaos ";
         $sql= $sql . " where avaliacaos.uc_id= ucs.id ";
         $sql= $sql . " and avaliacaos.id= '$prova_id' ";
         $sql= $sql . " and modelos.user_id= users.id ";
-        $sql= $sql . " and questoes.id= modelos.id ";
+        // $sql= $sql . " and questoes.id= modelos.id ";
         $sql= $sql . " order by modelos.id ";
         //$sql= $sql . " order by users.name ";
         //$sql= $sql . " and avaliacaos_questoes.questoes_id= questoes.id ";
@@ -533,8 +548,10 @@ class ExameController extends Controller
      public function showresultado($prova_id){
         $user=auth()->user();
         $quest=Questoes::all();
+        //$quest=$prova_id;
         $tema=Tema::all();
-        $sql= "select distinct * from avaliacaos, ucs, users, resultados  ";
+        $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.pontuacao_min, avaliacaos.uc_id,
+                users.id as idut, users.name, ucs.id, ucs.nomeu,resultados.id as idresultado, resultados.avaliacaos_id, resultados.pontuacaototal_aluno, resultados.status from avaliacaos, ucs, users, resultados  ";
         $sql= $sql . " Where avaliacaos.users_id= '$user->id' ";
         $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
         $sql= $sql . " and avaliacaos.id= '$prova_id' ";
@@ -543,15 +560,81 @@ class ExameController extends Controller
         //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
         //$sql= $sql . " and ucs_users.user_id= users.id ";
         $sql= $sql . " order by ucs.nomeu ";
-        $notas= DB::select($sql);
+        $qualificacoes= DB::select($sql);
 
-        return view('resultados.resultado', ['quest'=>$quest, 'notas'=>$notas]);
+        return view('resultados.resultado', ['prova_id'=>$prova_id, 'qualificacoes'=>$qualificacoes]);
+
+     }
+
+     public function destroiresultado($idresultado){
+        Resultados::findOrFail($idresultado)->delete();
+        return redirect('dashboard')->with('msg', 'Resultado excluido com sucesso!');
 
      }
 
 
+     public function export($prova_id)
+     {
+        $user=auth()->user();
+        //$quest=Questoes::all();
+        //$quest=$prova;
+        $tema=Tema::all();
+        $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.pontuacao_min, avaliacaos.uc_id,
+                users.id as idut, users.name, ucs.id, ucs.nomeu,resultados.id as idresultado, resultados.avaliacaos_id, resultados.pontuacaototal_aluno, resultados.status from avaliacaos, ucs, users, resultados  ";
+        $sql= $sql . " Where avaliacaos.users_id= '$user->id' ";
+        $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
+        $sql= $sql . " and avaliacaos.id= '$prova_id' ";
+        $sql= $sql . " and resultados.avaliacaos_id= '$prova_id' ";
+        $sql= $sql . " and resultados.user_id= users.id ";
+        //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
+        //$sql= $sql . " and ucs_users.user_id= users.id ";
+        $sql= $sql . " order by ucs.nomeu ";
+        $qualificacoes= DB::select($sql);
+         return Excel::download(new ResultadosExport($qualificacoes), 'Resultados.xlsx');
+     }
+
+     public function exportcsv($prova_id)
+     {
+        $user=auth()->user();
+        //$quest=Questoes::all();
+        //$quest=$prova;
+        $tema=Tema::all();
+        $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.pontuacao_min, avaliacaos.uc_id,
+                users.id as idut, users.name, ucs.id, ucs.nomeu,resultados.id as idresultado, resultados.avaliacaos_id, resultados.pontuacaototal_aluno, resultados.status from avaliacaos, ucs, users, resultados  ";
+        $sql= $sql . " Where avaliacaos.users_id= '$user->id' ";
+        $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
+        $sql= $sql . " and avaliacaos.id= '$prova_id' ";
+        $sql= $sql . " and resultados.avaliacaos_id= '$prova_id' ";
+        $sql= $sql . " and resultados.user_id= users.id ";
+        //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
+        //$sql= $sql . " and ucs_users.user_id= users.id ";
+        $sql= $sql . " order by ucs.nomeu ";
+        $qualificacoes= DB::select($sql);
+         return Excel::download(new ResultadosExport($qualificacoes), 'Resultados.csv');
+     }
+     public function exportpdf($prova_id)
+     {
+        $user=auth()->user();
+        //$quest=Questoes::all();
+        //$quest=$prova;
+        $tema=Tema::all();
+        $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.pontuacao_min, avaliacaos.uc_id,
+                users.id as idut, users.name, ucs.id, ucs.nomeu,resultados.id as idresultado, resultados.avaliacaos_id, resultados.pontuacaototal_aluno, resultados.status from avaliacaos, ucs, users, resultados  ";
+        $sql= $sql . " Where avaliacaos.users_id= '$user->id' ";
+        $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
+        $sql= $sql . " and avaliacaos.id= '$prova_id' ";
+        $sql= $sql . " and resultados.avaliacaos_id= '$prova_id' ";
+        $sql= $sql . " and resultados.user_id= users.id ";
+        //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
+        //$sql= $sql . " and ucs_users.user_id= users.id ";
+        $sql= $sql . " order by ucs.nomeu ";
+        $qualificacoes= DB::select($sql);
+         return Excel::download(new ResultadosExport($qualificacoes), 'Resultados.pdf');
+     }
+
 
      public function showqualificacao(){
+        // Apresentação dos resultados ambiente aluno
         $user=auth()->user();
         $quest=Questoes::all();
         $tema=Tema::all();
@@ -604,6 +687,14 @@ class ExameController extends Controller
             $sql= $sql . " and avaliacaos.id= '$prov' ";
             $sql= $sql . " and modelos.avaliacaos_id= '$prov'  ";
             $sql= $sql . " order by users.id ";*/
+
+
+        /*$sql= "select * from resultados, users ";
+        $sql= $sql . " where resultados.avaliacaos_id= '$prov' ";
+        $sql= $sql . " and resultados.user_id= users.id ";
+        $sql= $sql . " order by resultados.id ";
+        $modelagem= DB::delete($sql);*/
+
         $sql= "select avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.pontuacao_min, avaliacaos.uc_id, users.id as idut, users.name, ucs.id, ucs.nomeu, ucs_users.uc_id as uuuci, ucs_users.user_id as uuusi from avaliacaos, users, ucs, ucs_users";
         $sql= $sql . " where avaliacaos.id= '$prov' ";
         $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
@@ -622,7 +713,9 @@ class ExameController extends Controller
         foreach ($qualificacoes as $key => $qua) {
             $somaponto=0;
             $av= $qua->idav;
+            $ucnome=$qua->nomeu;
             $usuario= $qua->idut;
+            $nome=$qua->name;
             //$mod= $qua->idmo;
 
                 foreach ($modelagem as $key => $mode) {
@@ -633,7 +726,7 @@ class ExameController extends Controller
                     }
                     //$mod= $mode->idmo;
                 }
-            if ($somaponto>$qua->pontuacao_min) {
+            if ($somaponto>=$qua->pontuacao_min) {
                 $estado= 'Apto';
             }
             else {
@@ -664,7 +757,8 @@ class ExameController extends Controller
 
         return view('inscricaoucaluno.inscricaouc', ['ucs'=>$ucs]);
     }
-    public function storeinscricaouc(Request $request){
+    public function storeinscricaouc(StoreUpdateInscricaoUCRequest $request){
+        $request->validated();
         $inscricao= new Ucs_users;
         $user=auth()->user();
         $inscricao->uc_id= $request->uc_id;
@@ -672,6 +766,12 @@ class ExameController extends Controller
         $inscricao->save();
 
         return redirect('dashboard')->with('msg', 'Armazenado com sucesso!');
+
+    }
+
+    public function uploadfile(Request $request){
+        $request->file('file')->store('docs');
+        return redirect('dashboard');
 
     }
 

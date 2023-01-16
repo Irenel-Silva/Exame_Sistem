@@ -3,8 +3,17 @@
 @section('title', 'Inscricao na UC')
 
 @section('content')
+    @if($errors->any())
+        <ul class="errors">
+            @foreach($errors->all() as $error)
+                <li class="error"> {{ $error }}</li>
+            @endforeach
+
+        </ul>
+    @endif
 <div id="event-create-container" class="col-md-6 offset-md-3">
     <h1>Inscrição na UC</h1>
+
     <form action="/inscricaoucaluno" method="POST">
       @csrf
       <div class="form-group">

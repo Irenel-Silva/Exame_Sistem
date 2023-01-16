@@ -74,69 +74,6 @@
     <!--<script src="js/crono.js" defer></script>-->
     <script type="text/javascript">
         $(document).ready(function(){
-           /*function starttimer(duracao, display){
-                var timer= duracao, minutos, segundos;
-                setInterval(function(){
-                    minutos= parseInt(timer / 60, 10);
-                    segundos= parseInt(timer % 60, 10);
-                    minutos= minutos < 10 ? "0" + minutos : minutos;
-                    segundos= segundos < 10 ? "0" + segundos : segundos;
-
-
-                    display.textContent= minutos + ":" + segundos;
-                    if(--timer <0){
-                        timer =duracao;
-                    }
-
-                }, 1000);
-
-                document.write("form submitted");
-            }
-
-            window.onload= function(){
-                var tempo= $('#duracaoa').val();
-                var duracao = 60 * tempo; // conversão para segundos
-                var display = document.querySelector("#timer"); //elemento para exibir o timer
-
-                starttimer(duracao, display);
-            }*/
-            /* OUTRA TENTATIVA*/
-            /*function countDown(){
-                document.getElementById("min").innerHTML= minutes;
-                document.getElementById("remain").innerHTML= seconds;
-                setTimeout("countDown()",1000);
-                    if(minutes == 0 && seconds == 0)
-                        {
-
-                            //document.form.submit();
-                            document.write("form submitted");
-                        }
-                    else
-                        {
-                            seconds--;
-                            if(seconds ==0 && minutes > 0)
-                        {
-                            minutes--;
-                            seconds=60;
-                        }
-                    }
-            }
-
-            window.onload =counter;
-            function counter()
-            {
-            minutes= 2;
-            //$('#duracaoa').val();
-            seconds =60;
-            countDown();
-            }*/
-
-
-
-
-
-
-
 
         });
 

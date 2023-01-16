@@ -3,6 +3,14 @@
 @section('title', 'Elaborar Prova')
 
 @section('content')
+    @if($errors->any())
+        <ul class="errors">
+            @foreach($errors->all() as $error)
+                <li class="error"> {{ $error }}</li>
+            @endforeach
+
+        </ul>
+    @endif
 <div id="event-create-container" class="col-md-6 offset-md-3">
 
     <h1>Adicionar questões a avaliação</h1>
@@ -11,7 +19,7 @@
             @csrf
             <div class="form-group">
                 <label for="title">UC</label>
-                <select name="uc_id" id="uc_id" class="form-control" required>
+                <select name="uc_id" id="uc_id" class="form-control">
 
                     <option value="">Selecione a uc</option>
                     @if(count($ucs)>0)
@@ -29,7 +37,7 @@
 
             <div class="form-group">
                 <label for="title">Data da avaliação</label>
-                <select name="avaliacao_id" id="avaliacao_id" class="form-control" required>
+                <select name="avaliacao_id" id="avaliacao_id" class="form-control">
                     <option value="">Selecione a data</option>
 
                         @foreach ($avaliar as $av)
@@ -45,7 +53,7 @@
 
             <div class="form-group">
                 <label for="title">Tema de avaliação</label>
-                <select name="tema_id" id="tema_id" class="form-control" required>
+                <select name="tema_id" id="tema_id" class="form-control">
                     <option value="">Selecione a temática</option>
                         @foreach ($temat as $t)
                             <option value="{{ $t->id }}">{{ $t->titulo }}</option>
@@ -57,7 +65,7 @@
 
             <div class="form-group">
                 <label for="title">Questão da temática</label>
-                <select name="questoes_id" id="questoes_id" class="form-control" required>
+                <select name="questoes_id" id="questoes_id" class="form-control">
                     <option value="">Selecione a questão</option>
                         @foreach ($quest as $que)
                             <option value="{{ $que->id }}">{{ $que->questao }}</option>

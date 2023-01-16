@@ -19,6 +19,8 @@
                         <th scope="col">Duração</th>
                         <th scope="col">Status</th>
                         <th scope="col">Atribuir resultado</th>
+                        <th scope="col">Copiar Link Prova</th>
+                        <th scope="col">Upload Prova</th>
                         <th scope="col">CRUD Prova</th>
                         <!--<th scope="col">CRUD Questões</th>-->
                     </tr>
@@ -35,13 +37,23 @@
                                 <td>{{ $q->duracao }}</td>
                                 <?php $hoje= strtotime(date("Y-m-d")); ?>
 
-                                @if($q->data >= $hoje )
+                                @if($q->data > $hoje )
                                     <td><a style="color: aquamarine;">Por fazer</a></td>
                                     <td><a href="/resultados/addresultado/{{ $q->idav }}">Disponível</a></td>
                                 @else
                                     <td><a style="color:darkred;">Feito </a></td>
                                     <td><a style="color: darkred;"> Indisponível</a></td>
                                 @endif
+                                <td><a href="/alunos/provaaluno/{{ $q->idav }}">link</a></td>
+                                <td>
+                                    <form action="/prof" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="file" name="file"/>
+                                        <input type="submit"  class="btn btn-primary" name="acao" value="Upload"/>
+                                    </form>
+
+                                </td>
+
                                 <td>
                                     <a href="/prova/editarprova/{{ $q->idav }}" class="btn btn-info edit-btn"><ion-icon name="create-outline"></ion-icon>Editar</a>
                                 </td>
@@ -53,5 +65,18 @@
     </div>
 
 </div>
+<?php
+    if (isset($_POST['acao'])) {
+         // formulário foi enviado
+        $arquivo= $_Files['file'];
+        $arquivon= explode('.', $arquivo['name']);
+        if ($arquivon[sizeof($arquivon)-1]!= 'jpg') {
+                die('Você não pode fazer upload deste tipo de arquivo');
+        }else {
+            echo 'Upload feito com sucesso!';
+            move_uploaded_file($arquivo['tmp_name'], 'uploads/'.$arquivo['name']);
+        }
+    }
+?>
 
 @endsection

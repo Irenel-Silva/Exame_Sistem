@@ -3,6 +3,14 @@
 @section('title', 'Perguntas')
 
 @section('content')
+    @if($errors->any())
+        <ul class="errors">
+            @foreach($errors->all() as $error)
+                <li class="error"> {{ $error }}</li>
+            @endforeach
+
+        </ul>
+    @endif
 
 <div id="event-create-container" class="col-md-6 offset-md-3">
     <h1>Formulário para armazenar Questões no BD</h1>
@@ -31,7 +39,7 @@
       </div>
       <div class="form-group">
         <label for="title">Tipo de Questão</label>
-        <select name="tipo" id="tipo" class="form-control">
+        <select name="tipoq" id="tipoq" class="form-control">
             <option value="">Selecione o tipo de questao</option>
           <option value="selecao">Seleção</option>
           <option value="definicao">Definição</option>
@@ -52,7 +60,7 @@
 
       <div class="form-group">
         <label for="title">Respota:</label>
-        <input type="text" class="form-control" id="respota" name="resposta" placeholder="digite a resposta da questão">
+        <input type="text" class="form-control" id="resposta" name="resposta" placeholder="digite a resposta da questão">
       </div>
       <div class="form-group">
         <label for="title">Pontuação:</label>
