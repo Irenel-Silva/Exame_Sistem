@@ -5,7 +5,7 @@
 @section('content')
 
 <div id="event-create-container" class="col-md-6 offset-md-3">
-    <h1>Prova</h1>
+    <h5>Prova</h5>
     <p style="color:black;">
         <?php  $cont=0;$resultexa=0; $existe='nao' ?>
         @foreach($modelos as $mo)
@@ -17,20 +17,17 @@
     @if($existe=='sim')
         <label><h4> Aluno <?php echo auth()->user()->name ?> já tem a Prova feita </h4></label>
     @else
-        <!--<div  id="timer" class="form-group">-->
             <h5><span id="min" ></span><b>  Minutos</b>
             <span></span><b>:</b>
 		    <span id="remain"></span><b>  Segundos</b></h5>
 
-        <!--</div>-->
         @foreach ($prova as $pro)
 
             @if($pro->idav==$provado)
                 @while ($cont==0)
 
-                <h4 class="text-left">{{ $pro->nomeu }}</h4><br>
-                <h4 class="text-left">{{$pro->data}}</h4><br>
-                <h4 class="text-left">{{$pro->duracao}}</h4><br>
+                <h5 class="text-left">{{ $pro->nomeu }}</h5><br>
+                <h5 class="text-left">{{$pro->data}}</h5><br>
                 <?php $cont++?>
                 <div class="form-group">
                     <input type="hidden" id="duracaoa" name="duracaoa" value="{{ $pro->duracao }}">
@@ -39,14 +36,14 @@
             @endif
         @endforeach
         </p>
-        <br>
-        <br>
+
         <form action="/alunos"  id="form" method="POST">
          @csrf
          <div class="form-group">
             <input type="hidden" id="prova_id" name="prova_id" value="{{ $provado }}">
             @foreach ($prova as $pro)
                 @if($pro->idav==$provado)
+                    <input type="hidden" id="questao_id[]" name="questao_id[]" value="{{ $pro->idque }}">
                     <h3><label for="title">Q{{ $loop->index +1 }}. {{ $pro->questao }}</label></h3><br>
                     @if($pro->tipoq!="definicao")
                         <h5><input type="checkbox"  id="resposta[]" name="resposta[]" value="{{ $pro->opcaoA }}"> a). {{ $pro->opcaoA }}</h4><br>
@@ -63,7 +60,6 @@
                         @endif
                     @else
                     <textarea rows="9" cols="18" class="form-control" id="resposta[]" name="resposta[]" placeholder="digite a tua resposta"></textarea><br>
-                        <!--<input type="text" class="form-control" id="resposta[]" name="resposta[]" placeholder="digite a tua resposta"><br>-->
                     @endif
                 @endif
             @endforeach
@@ -71,7 +67,6 @@
          </div>
         </form>
     @endif
-    <!--<script src="js/crono.js" defer></script>-->
     <script type="text/javascript">
         $(document).ready(function(){
 
@@ -85,6 +80,7 @@
         function counter()
         {
         minutos=$('#duracaoa').val();
+        minutos = minutos-1;
         segundos =60;
         minutos= minutos < 10 ? "0" + minutos : minutos;
         segundos= segundos < 10 ? "0" + segundos : segundos;
@@ -100,9 +96,7 @@
             if(minutos == 0 && segundos == 0)
                 {
 
-                    //document.form.submit();
                     document.getElementById("form").submit();
-                    //document.write("form submitted");
                 }
             else
                 {

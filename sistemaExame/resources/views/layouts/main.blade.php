@@ -46,29 +46,15 @@
                         <li class="nav-item">
                             <a href="/alunos/veraluno" class="nav-link">ver</a>
                         </li>
-                        <!--<li class="nav-item">
-                            <a href="/alunos/provaaluno" class="nav-link">Realizar</a>
-                        </li>-->
                         <li class="nav-item">
                             <a href="/inscricaoucaluno/inscricaouc" class="nav-link">Inscrição</a>
                         </li>
                       @endif
                       @if(auth()->user()->perfis_id==2)
                       <li class="nav-item">
-                        <a href="/resultados/listaprovaprof" class="nav-link">Qualificação</a>
-                            <!--<ul class="navbar-nav">
-                                <li class="nav-item">
-                                <a href="/resultados/addresultado" class="nav-link">Atribuir</a>
-                                </li>
-                            </ul>-->
-                     </li>
+
                       <li class="nav-item">
-                        <a href="/prof/verpprof" class="nav-link">Ver</a>
-                        <!--<ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a href="/alunos/veraluno" class="nav-link">Prova Publicar</a>
-                            </li>
-                        </ul>-->
+                        <a href="/prof/verpprof" class="nav-link">Qualificação</a>
                      </li>
                         <li class="nav-item">
                                  <a href="/prof/addqa" class="nav-link">Prova</a>
@@ -88,10 +74,10 @@
                        </ul>
                    </li>
                         <li class="nav-item">
-                            <a href="/ucs/uc" class="nav-link">Uc</a>
-                         </li>
-                        <li class="nav-item">
                             <a href="/temas/tema" class="nav-link">Tema</a>
+                         </li>
+                         <li class="nav-item">
+                            <a href="/ucs/uc" class="nav-link">Uc</a>
                          </li>
 
                       @endif
@@ -120,7 +106,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <p  class="nomeado">
-                        Bem Vindo, {{ Auth::user()->name }}
+                        @if(auth()->user()->perfis_id==2)
+                             Bem Vindo, Professor {{ Auth::user()->name }}
+                        @else
+                            @if(auth()->user()->perfis_id==3)
+                                Bem Vindo, Estudante {{ Auth::user()->name }}
+                            @else
+                                Bem Vindo, {{ Auth::user()->name }}
+                            @endif
+                        @endif
                       </p>
                 </div>
             </div>

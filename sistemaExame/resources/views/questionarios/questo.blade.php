@@ -13,7 +13,7 @@
     @endif
 
 <div id="event-create-container" class="col-md-6 offset-md-3">
-    <h1>Formulário para armazenar Questões no BD</h1>
+    <h1>Questões</h1>
     <form action="/questionarios" method="POST">
       @csrf
 
@@ -75,9 +75,8 @@
             var controlcampo= 1;
             $(".btn-add").click(function(){
                 controlcampo++;
-                //console.log(controlcampo);
+
                 document.getElementById('alinha').insertAdjacentHTML('beforeend', '<div class="form-group1" id="opcao' +controlcampo + '" >    <label for="title"> Opção' +controlcampo +':</label><input type="text" class="form-control" id="opcao' + controlcampo+ '" name="opcao' + controlcampo+ '" placeholder="digite o corresponde a opção"/>  <button type="button" id="' + controlcampo + '" class="btn btn-remove"  > - </button></div>');
-                //var val= controlcampo;
             });
             $("body").on("click", ".btn-remove", function(){
                 $(this).parents(".form-group1").remove();

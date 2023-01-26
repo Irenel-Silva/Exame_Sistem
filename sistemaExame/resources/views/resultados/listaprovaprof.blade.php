@@ -17,7 +17,6 @@
                         <th scope="col">Tipo</th>
                         <th scope="col">UC</th>
                         <th scope="col">Qualificação</th>
-                       <!-- <th scope="col">Status</th> -->
                     </tr>
 
                 </thead>

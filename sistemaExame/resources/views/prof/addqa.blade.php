@@ -44,9 +44,6 @@
                             <option value="{{ $av->id }}"> {{ $av->data }}</option>
                         @endforeach
                 </select>
-                    <!--
-                        <input type="hidden" id="qquestoes" name="qquestoes" value="">
-                    -->
             </div>
 
 

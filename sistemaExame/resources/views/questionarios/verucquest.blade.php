@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="col-md-10 offset-md-1 dashboard-title-container">
-    <h1>Avaliações</h1>
+    <h1>Questões UC</h1>
     <br>
     <br>
     <div class="col-md-10 offset-md-1 dashboard-events-container">

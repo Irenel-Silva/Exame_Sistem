@@ -36,4 +36,5 @@ class Questoes extends Model
     public function avaliacoes(){
         return $this->belongsToMany('App\Models\Avaliacao');
     }
+
 }

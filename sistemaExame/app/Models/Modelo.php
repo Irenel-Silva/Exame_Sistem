@@ -13,6 +13,7 @@ class Modelo extends Model
         'respostam',
         'pontuacaom',
         'user_id',
+        'questao_id',
     ];
 
     protected $guarded= [];
@@ -20,10 +21,11 @@ class Modelo extends Model
         return $this->belongsTo('App\Models\Avaliacao');
     }
 
-    public function questoess(){
-        return $this->belongsToMany('App\Models\Questoes');
+    public function questao(){
+        return $this->belongsTo('App\Models\Questoes');
     }
     public function aluno(){
         return $this->belongsTo('App\Models\User');
     }
+
 }

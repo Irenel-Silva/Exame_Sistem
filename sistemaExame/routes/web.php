@@ -14,14 +14,10 @@ use App\Http\Controllers\ExameController;
 |
 */
 Route::get('/', [ExameController::class, 'index']);
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
+
 Route::get('/prova/criar', [ExameController::class, 'criado'])->middleware('auth');
-//Route::post('/prova/juntar{id}', [ExameController::class, 'juntarPA'])->middleware('auth');
 Route::get('/prova/realizar', [ExameController::class, 'realizado'])->middleware('auth');
 
-Route::get('/impressao', [ExameController::class, 'testes'])->middleware('auth');
 Route::post('/prova', [ExameController::class, 'store']);
 Route::get('/prova/{id}', [ExameController::class, 'pegar'])->middleware('auth');
 Route::post('/prova/juntarPA/{id}', [ExameController::class, 'juntos'])->middleware('auth');
@@ -41,11 +37,7 @@ Route::get('/prof/verpprof', [ExameController::class, 'verprova'])->middleware('
 Route::post('/temas', [ExameController::class, 'storetema']);
 Route::post('/ucs', [ExameController::class, 'storeuc']);
 Route::post('/prof', [ExameController::class, 'storeadd']);
-Route::post('/prof', [ExameController::class, 'uploadfile'])->middleware('auth');
 
-
-
-Route::get('/alunos/provaaluno', [ExameController::class, 'realizaravaliacao'])->middleware('auth');
 
 Route::post('/alunos', [ExameController::class, 'storealunaval']);
 
@@ -69,7 +61,7 @@ Route::get('resultados/exportpdf/{id}', [ExameController::class, 'exportpdf'])->
 
 Route::get('/resultados/qualificacoes', [ExameController::class, 'showqualificacao'])->middleware('auth');
 
-/*Route::get('/resultados/viewresultado', [ExameController::class, 'viewresultado'])->middleware('auth');*/
+
 
 Route::get('/inscricaoucaluno/inscricaouc', [ExameController::class, 'showinscricaouc'])->middleware('auth');
 
@@ -89,7 +81,7 @@ Route::get('/questionarios/listaquest/{id}', [ExameController::class, 'listaques
 Route::get('/questionarios/editquest/{id}', [ExameController::class, 'editquest'])->middleware('auth');
 Route::put('/questionarios/updatequest/{id}', [ExameController::class, 'updatequest'])->middleware('auth');
 
-//Route::post('/a', [ExameController::class, 'storeinscricaouc']);
+
 
 
 
@@ -103,34 +95,6 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
-/*Route::group(['middleware' => 'auth'], function() {
-    Route::group(['middleware' => 'role:estudante', 'prefix' => 'estudante', 'as' => '/'], function() {
-        //Route::resource('/', \App\Http\Controllers\Estudantes\Actividades::class);
-    });
-   Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => '/'], function() {
-       //Route::resource('/', \App\Http\Controllers\Professores\LecionarController::class);
-   });
-    Route::group(['middleware' => 'role:admin', 'prefix' => 'admin', 'as' => '/'], function() {
-       // Route::resource('/', \App\Http\Controllers\Admin\gestaoController::class);
-    });
-});*/
-/*
-Route::middleware(['admin'])->group(function () {
-    Route::get('admin', function () {
-        return view('dashboard');
-    });
-});
 
-Route::middleware(['estudante'])->group(function () {
-    Route::get('estudante', function () {
-        return view('dashboard');
-    });
-});
-
-Route::middleware(['professor'])->group(function () {
-    Route::get('professor', function () {
-        return view('dashboard');
-    });
-});*/
 
 

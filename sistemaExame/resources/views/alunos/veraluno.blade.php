@@ -30,7 +30,6 @@
                             <?php
                                 $calculo= strtotime($vi->hora) + 60*$vi->duracao;
                                 $termino= strftime('%H:%M:%S', $calculo);
-                                echo $termino;
                             ?>
                             <tr>
                                 <td scropt="row">{{$loop->index +1}}</td>
@@ -44,13 +43,13 @@
 
                                 ?>
 
-                                @if($vi->data >= $hoje && $tempo<= $termino )
+                                @if($vi->data == $hoje && $tempo<= $termino )
                                     <td><a style="color: aquamarine;">Activo</a></td>
                                 @else
                                     <td>Inactivo</td>
                                 @endif
 
-                                @if($vi->data >= $hoje  && $tempo>= $vi->hora  && $tempo>= $termino)
+                                @if($vi->data == $hoje  && $tempo>= $vi->hora  && $tempo<= $termino)
                                     <td><a href="/alunos/provaaluno/{{ $vi->idav }}">Disponível</a></td>
                                 @else
                                     <td><a style="color: darkred;">Indisponível</a></td>
@@ -59,11 +58,6 @@
                         @endforeach
                 </body>
             </table>
-            <?php
-                /*echo $tempo;
-                echo " ";
-                echo $hoje;*/
-            ?>
 
     </div>
 

@@ -38,10 +38,9 @@ class ExameController extends Controller
     }
 
     public function criado() {
-        //$user= User::all();
         $ucs= Uc::all();
-        //$avaliar=Avaliacao::all();
-    return view('prova.criar', ['ucs'=>$ucs,/*'user'=>$user,  'avaliar'=>$avaliar*/]);
+
+    return view('prova.criar', ['ucs'=>$ucs]);
     }
 
     public function realizado(){
@@ -50,6 +49,11 @@ class ExameController extends Controller
         $avaliar=Avaliacao::all();
         return view('prova.realizar', ['user'=>$user, 'ucs'=>$ucs, 'avaliar'=>$avaliar]);
     }
+
+    public function pegar($id){
+        $avaliar= Avaliacao::findOrFail($id);
+        return view('/prova/juntarPA/{id}', ['avaliar'=>$avaliar]);
+     }
 
     public function store(StoreUpdateAvaliacaoRequest $request){
         $avalic= new Avaliacao;
@@ -66,43 +70,14 @@ class ExameController extends Controller
         $avalic->data=$request->data;
         $avalic->hora=$request->hora;
         $avalic->prova_id= $unique_id;
-        //$avalic->user_id=$request->user_id;
-
 
         $user=auth()->user();
         $avalic->users_id= $user->id;
-        //$perfil->id = $user->perfis_id;
 
         $avalic->save();
         return redirect('dashboard')->with('msg', 'Armazenado com sucesso!');
     }
 
-
-
-    public function testes(){
-        // $provas= Prova::all();
-         //$perfil= Perfil::all();
-        // $avaliacaos= Avaliacao::all();
-         //$uc= Uc::all();
-         //$questoes= Questoes::all();
-         $curso= Curso::all();
-         //dd($uc);
-        $user= User::all();
-     return view('impressao',[ 'user'=>$user/*,'perfil'=>$perfil /*,
-
-                 'avaliacao'=>$avaliacao, 'uc'=>$uc,
-                 'questoes'=>$questoes*/, 'curso'=>$curso]);
-
-     }
-     /*
-     public function juntos($id){
-        $user= auth()->user();
-        $user->enunciados()->attach($id);
-        $avaliar=Avaliacao::findOrFail($id);
-
-            return view('dashboard')->with('msg','Dados armazenados na tabela M-M(avaliacaos-users');
-
-     }*/
 
      public function quest(){
             $user= User::all();
@@ -146,10 +121,6 @@ class ExameController extends Controller
      }
 
 
-     public function pegar($id){
-        $avaliar= Avaliacao::findOrFail($id);
-        return view('/prova/juntarPA/{id}', ['avaliar'=>$avaliar]);
-     }
 
      public function tematica(){
         $ucs= Uc::all();
@@ -161,33 +132,16 @@ class ExameController extends Controller
         return view('ucs.uc');
      }
 
-     public function __construct(Uc $ucs, Avaliacao $avaliar, Tema $tema, Questoes $quest){
-       /* $this->ucs= $ucs;
-        $this->avaliar= $avaliar;
-        $this->tema= $tema;
-        $this->quest= $quest;*/
-     }
+
 
      public function prova(){
         $user=auth()->user();
-        /*$ucs= $this->ucs->orderBy('nomeu', 'ASC')->get();
-        $avaliar= $this->avaliar->Where('id', '=',0)->orderBy('data', 'ASC')->get();
-        #$avaliar=Avaliacao::all();
-        $temat=$this->tema->Where('id', '=',0)->orderBy('titulo', 'ASC')->get();
-        $quest=$this->quest->Where('id', '=',0)->orderBy('questao', 'ASC')->get();*/
         $ucs= Uc::orderBy('nomeu', 'ASC')->get();
         $avaliar= Avaliacao::Where('id', '=',0)->orderBy('data', 'ASC')->get();
         $temat= Tema::Where('id', '=',0)->orderBy('titulo', 'ASC')->get();
         $quest= Questoes::Where('id', '=',0)->orderBy('questao', 'ASC')->get();
-                //$avaliar= Avaliacao::with('questoes_id')->get();
-        /*$sql= "select  distinct avaliacaos.id, avaliacaos.data, avaliacaos.qtidade_questoes as aqq, avaliacaos_questoes.id as aqi, avaliacaos_questoes.avaliacaos_id,
-                avaliacaos_questoes.questoes_id, ucs.id, ucs.nomeu   from avaliacaos_questoes, avaliacaos, ucs";
-        $sql= $sql . " Where avaliacaos.uc_id= ucs.id ";
-        $sql= $sql . " and avaliacaos.id= avaliacaos_questoes.avaliacaos_id ";
-        $sql= $sql . " order by avaliacaos.id";
-        $qquestoes= DB::select($sql);*/
 
-     return view('prof.addqa', ['quest'=>$quest, 'temat'=>$temat,'avaliar'=>$avaliar, 'ucs'=>$ucs/*, 'qquestoes'=>$qquestoes*/]);
+        return view('prof.addqa', ['quest'=>$quest, 'temat'=>$temat,'avaliar'=>$avaliar, 'ucs'=>$ucs/*, 'qquestoes'=>$qquestoes*/]);
 
      }
 
@@ -198,18 +152,7 @@ class ExameController extends Controller
         $sql= $sql . " Where avaliacaos.uc_id= '$uc_id' ";
         $sql= $sql . " order by avaliacaos.data";
         $avaliar= DB::select($sql);
-        //$cont=0;
-        /*foreach( $avaliar as $ava){
-            if($cont<=0){
-                if($ava->aqq<count($ava->aqai)){
-                    //$avaliar= DB::select($sql);
-                }
-                else{
-                    $avaliar=0;
-                }
-            }
-            $cont++;
-        }*/
+
         return view('prof.avaliar_ajax', ['avaliar'=>$avaliar]);
 
      }
@@ -238,21 +181,18 @@ class ExameController extends Controller
      }
      public function verprova(){
         $user=auth()->user();
-        //$questoes=Questoes::all();
-        //$quest= $this->quest;
+
         $tema=Tema::all();
-        //$tema= $this->tema;
-        #$avaliar= Avaliacao::with('quest','tema')->get();
-        //$avaliar= $this->avaliar;
+
         $sql= "select avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.uc_id, avaliacaos.users_id,
             avaliacaos.data, avaliacaos.duracao, ucs.id, ucs.nomeu from avaliacaos, ucs ";
         $sql= $sql . " Where avaliacaos.users_id= '$user->id' ";
         $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
         $sql= $sql . " order by ucs.nomeu ";
         $quest= DB::select($sql);
-        //$avaliar= Avaliacao::with('uc')->get();
 
-        return view('prof.verpprof', ['quest'=>$quest,  /*'tema'=>$tema,'avaliar'=>$avaliar*/]);
+
+        return view('prof.verpprof', ['quest'=>$quest]);
      }
 
 
@@ -286,7 +226,6 @@ class ExameController extends Controller
      public function storeuc(StoreUpdateUcRequest $request){
         $uc= new Uc;
         $request->validated();
-        //$request->all();
         $uc->nomeu =$request->nomeu;
         $uc->qcreditos= $request->qcreditos;
         $uc->carga_horaria =$request->carga_horaria;
@@ -300,11 +239,6 @@ class ExameController extends Controller
 
      public function veruc(){
         $ucs= Uc::all();
-        /*$user= auth()->user();
-        $sql= "select distinct * from ucs ";
-        $sql= $sql . " Where ucs.id= '$user->id' ";
-        $sql= $sql . " order by ucs.id ";
-        $ucs= DB::select($sql);*/
         return view('questionarios.verucquest', ['ucs'=>$ucs]);
      }
 
@@ -319,25 +253,16 @@ class ExameController extends Controller
      }
 
 
-
-
-
      public function storeadd(StoreUpdateAddQARequest $request){
 
         $request->validated();
         $avid=$request->avaliacao_id;
         $avque= $request->questoes_id;
-        //$qq= $request->qquestoes;
         $sql= "select distinct * from avaliacaos_questoes ";
-        //$sql= $sql . " Where avaliacaos.id= '$avid' ";
-        //$sql= $sql . " and avaliacaos_questoes.avaliacaos_id= avaliacaos.id ";
         $sql= $sql . " Where avaliacaos_questoes.avaliacaos_id= '$avid' ";
         $sql= $sql . " order by avaliacaos_questoes.questoes_id ";
         $comparar= DB::select($sql);
         $cont=0; $com=0; $rep=0;
-
-
-
 
         $sql= "select distinct * from avaliacaos ";
         $sql= $sql . " Where avaliacaos.id= '$avid' ";
@@ -370,28 +295,11 @@ class ExameController extends Controller
      }
 
 
-     public function realizaravaliacao(){
-        $user= auth()->user();
-        $sql= "select * from ucs, avaliacaos_questoes, avaliacaos, questoes, ucs_users ";
-        $sql= $sql . " Where avaliacaos_questoes.avaliacaos_id= avaliacaos.id ";
-        $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
-        $sql= $sql . " and avaliacaos_questoes.questoes_id= questoes.id ";
-        $sql= $sql . " and questoes.uc_id= ucs.id ";
-        $sql= $sql . " and ucs_users.uc_id= ucs.id ";
-        $sql= $sql . " and ucs_users.user_id= '$user->id' ";
-        $sql= $sql . " order by questoes.questao ";
-        $prova= DB::select($sql);
-
-
-        return view('alunos.provaaluno',['prova'=>$prova]);
-     }
-
      public function veravaliacao(){
         $user= auth()->user();
-        $sql= "select avaliacaos.id as idav,avaliacaos.tipoa, avaliacaos.prova_id, avaliacaos.data, avaliacaos.hora, avaliacaos.duracao, ucs.nomeu, ucs_users.uc_id, ucs_users.user_id from avaliacaos, ucs, ucs_users ";
+        $sql= "select  distinct avaliacaos.id as idav,avaliacaos.tipoa, avaliacaos.uc_id, avaliacaos.prova_id, avaliacaos.data, avaliacaos.hora, avaliacaos.duracao, ucs.nomeu, ucs_users.uc_id, ucs_users.user_id from avaliacaos, ucs, ucs_users ";
         $sql= $sql . " Where ucs_users.uc_id= ucs.id ";
-        //$sql= $sql . " Where avaliacaos.uc_id= ucs.id ";
-        //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
+        $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
         $sql= $sql . " and ucs_users.user_id= '$user->id' ";
         $sql= $sql . " order by ucs.nomeu ";
         $visual= DB::select($sql);
@@ -403,13 +311,6 @@ class ExameController extends Controller
      public function storealunaval(Request $request){
         $user= auth()->user();
         $prov= $request->prova_id;
-        /*$sql= "select * from ucs, avaliacaos_questoes, avaliacaos, questoes ";
-        $sql= $sql . " Where avaliacaos_questoes.avaliacaos_id= avaliacaos.id ";
-        $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
-        $sql= $sql . " and avaliacaos_questoes.questoes_id= questoes.id ";
-        $sql= $sql . " and questoes.uc_id= ucs.id ";
-        $sql= $sql . " order by questoes.questao ";
-        $prova= DB::select($sql);*/
         $sql= "select avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.prova_id, avaliacaos.data, avaliacaos.hora, avaliacaos.duracao, ucs.id, ucs.nomeu, questoes.questao, questoes.opcaoA, questoes.opcaoB, questoes.opcaoC, questoes.opcaoD, questoes.opcaoE, questoes.opcaoF, questoes.respostaq, questoes.tipoq, questoes.pontuacao_questao  from ucs, avaliacaos_questoes, avaliacaos, questoes ";
         $sql= $sql . " Where avaliacaos_questoes.avaliacaos_id= avaliacaos.id ";
         $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
@@ -422,18 +323,13 @@ class ExameController extends Controller
         $responde= $request->resposta;
         $avaid= $request->prova_id;
         $usuid= $user->id;
+        $questaoid= $request->questao_id;
         $modelo= new Modelo;
-        /*for($i=0; $i < count($responde); $i++){
-
-            $modelo->avaliacaos_id= $avaid;
-            $modelo->user_id= $usuid;
-            $modelo->resposta= $responde[$i];
-            $modelo->save();
-        }*/
         foreach($prova as $key => $provas){
 
             $modelo->avaliacaos_id= $avaid;
             $modelo->user_id= $usuid;
+            $modelo->questao_id= $questaoid[$key];
             $modelo->respostam= $responde[$key];
 
             if($provas->tipoq == "selecao"){
@@ -452,23 +348,11 @@ class ExameController extends Controller
                 'avaliacaos_id' => $avaid,
                 'user_id' => $usuid,
                 'respostam' => $responde[$key],
-                'pontuacaom' => $valor
+                'pontuacaom' => $valor,
+                'questao_id' => $questaoid[$key]
             ];
-            //$modelo->save();
             $modelo::insert($savedado);
         }
-
-        /*for($i=0; $i < count($responde); $i++){
-            $savedado= [
-                'avaliacaos_id' => $request->prova_id,
-                'user_id' => $user->id,
-                'resposta' => $request->resposta[$i]
-            ];
-            $modelo->$savedado;
-            $modelo->save();
-
-        }*/
-        //$modelo_id= $modelo->id;
 
 
         return redirect('dashboard')->with('msg', 'Armazenado com sucesso!');
@@ -491,16 +375,14 @@ class ExameController extends Controller
      public function show($prova_id){
         $user= auth()->user();
         $modelos= Modelo::all();
-        $sql= "select avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.prova_id, avaliacaos.data, avaliacaos.hora, avaliacaos.duracao, ucs.id, ucs.nomeu, questoes.questao, questoes.opcaoA, questoes.opcaoB, questoes.opcaoC, questoes.opcaoD, questoes.opcaoE, questoes.opcaoF, questoes.respostaq, questoes.tipoq, questoes.pontuacao_questao  from ucs, avaliacaos_questoes, avaliacaos, questoes ";
+        $sql= "select avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.prova_id, avaliacaos.data, avaliacaos.hora, avaliacaos.duracao, ucs.id, ucs.nomeu, questoes.id as idque, questoes.questao, questoes.opcaoA, questoes.opcaoB, questoes.opcaoC, questoes.opcaoD, questoes.opcaoE, questoes.opcaoF, questoes.respostaq, questoes.tipoq, questoes.pontuacao_questao  from ucs, avaliacaos_questoes, avaliacaos, questoes ";
         $sql= $sql . " Where avaliacaos_questoes.avaliacaos_id= avaliacaos.id ";
         $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
         $sql= $sql . " and avaliacaos.id= '$prova_id' ";
-        //$sql= $sql . " and avaliacaos.users_id= '$user->id' ";
         $sql= $sql . " and avaliacaos_questoes.questoes_id= questoes.id ";
         $sql= $sql . " and questoes.uc_id= ucs.id ";
         $sql= $sql . " order by questoes.id ";
         $prova= DB::select($sql);
-       // $provas=$prova::findOrFail();
         $avaliar= Avaliacao::findOrFail($prova_id);
         $provado= $prova_id;
 
@@ -508,20 +390,17 @@ class ExameController extends Controller
      }
 
      public function resultado($prova_id){
-        $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.data, avaliacaos.hora, avaliacaos.duracao,
+        $sql= "select avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.data, avaliacaos.hora, avaliacaos.duracao,
                 avaliacaos.pontuacao_min,avaliacaos.qtidade_questoes, ucs.id as iduc, ucs.nomeu, users.id as idut, users.name, modelos.id as idmo,
-                 modelos.user_id, modelos.avaliacaos_id, modelos.respostam, modelos.pontuacaom,  questoes.id as idque,
+                 modelos.user_id, modelos.avaliacaos_id, modelos.respostam, modelos.pontuacaom, modelos.questao_id, questoes.id as idque,
                  questoes.tipoq, questoes.questao, questoes.respostaq, questoes.pontuacao_questao
                  from questoes, modelos, users, ucs, avaliacaos ";
         $sql= $sql . " where avaliacaos.uc_id= ucs.id ";
         $sql= $sql . " and avaliacaos.id= '$prova_id' ";
         $sql= $sql . " and modelos.user_id= users.id ";
-        // $sql= $sql . " and questoes.id= modelos.id ";
+        $sql= $sql . " and questoes.tipoq= 'definicao' ";
+        $sql= $sql . " and questoes.id= modelos.questao_id ";
         $sql= $sql . " order by modelos.id ";
-        //$sql= $sql . " order by users.name ";
-        //$sql= $sql . " and avaliacaos_questoes.questoes_id= questoes.id ";
-        //$sql= $sql . " and questoes.uc_id= ucs.id ";
-        //$sql= $sql . " order by ucs.nomeu ";
         $qualificacoes= DB::select($sql);
         $provado= $prova_id;
         $modelos= Modelo::all();
@@ -531,12 +410,9 @@ class ExameController extends Controller
      }
      public function listarprova(){
         $user=auth()->user();
-        /*ucs_users.uc_id, ucs_users.user_id, users.id as uid, users.name      , ucs_users, users*/
         $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.uc_id as avuc, avaliacaos.users_id as avus,
                 ucs.id, ucs.nomeu from avaliacaos, ucs ";
         $sql= $sql . " Where avaliacaos.users_id= '$user->id' ";
-        //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
-        //$sql= $sql . " and ucs_users.user_id= users.id ";
         $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
         $sql= $sql . " order by ucs.nomeu ";
         $listas= DB::select($sql);
@@ -548,7 +424,6 @@ class ExameController extends Controller
      public function showresultado($prova_id){
         $user=auth()->user();
         $quest=Questoes::all();
-        //$quest=$prova_id;
         $tema=Tema::all();
         $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.pontuacao_min, avaliacaos.uc_id,
                 users.id as idut, users.name, ucs.id, ucs.nomeu,resultados.id as idresultado, resultados.avaliacaos_id, resultados.pontuacaototal_aluno, resultados.status from avaliacaos, ucs, users, resultados  ";
@@ -557,9 +432,7 @@ class ExameController extends Controller
         $sql= $sql . " and avaliacaos.id= '$prova_id' ";
         $sql= $sql . " and resultados.avaliacaos_id= '$prova_id' ";
         $sql= $sql . " and resultados.user_id= users.id ";
-        //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
-        //$sql= $sql . " and ucs_users.user_id= users.id ";
-        $sql= $sql . " order by ucs.nomeu ";
+        $sql= $sql . " order by users.name ";
         $qualificacoes= DB::select($sql);
 
         return view('resultados.resultado', ['prova_id'=>$prova_id, 'qualificacoes'=>$qualificacoes]);
@@ -576,8 +449,6 @@ class ExameController extends Controller
      public function export($prova_id)
      {
         $user=auth()->user();
-        //$quest=Questoes::all();
-        //$quest=$prova;
         $tema=Tema::all();
         $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.pontuacao_min, avaliacaos.uc_id,
                 users.id as idut, users.name, ucs.id, ucs.nomeu,resultados.id as idresultado, resultados.avaliacaos_id, resultados.pontuacaototal_aluno, resultados.status from avaliacaos, ucs, users, resultados  ";
@@ -586,9 +457,7 @@ class ExameController extends Controller
         $sql= $sql . " and avaliacaos.id= '$prova_id' ";
         $sql= $sql . " and resultados.avaliacaos_id= '$prova_id' ";
         $sql= $sql . " and resultados.user_id= users.id ";
-        //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
-        //$sql= $sql . " and ucs_users.user_id= users.id ";
-        $sql= $sql . " order by ucs.nomeu ";
+        $sql= $sql . " order by users.name ";
         $qualificacoes= DB::select($sql);
          return Excel::download(new ResultadosExport($qualificacoes), 'Resultados.xlsx');
      }
@@ -596,8 +465,6 @@ class ExameController extends Controller
      public function exportcsv($prova_id)
      {
         $user=auth()->user();
-        //$quest=Questoes::all();
-        //$quest=$prova;
         $tema=Tema::all();
         $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.pontuacao_min, avaliacaos.uc_id,
                 users.id as idut, users.name, ucs.id, ucs.nomeu,resultados.id as idresultado, resultados.avaliacaos_id, resultados.pontuacaototal_aluno, resultados.status from avaliacaos, ucs, users, resultados  ";
@@ -606,17 +473,14 @@ class ExameController extends Controller
         $sql= $sql . " and avaliacaos.id= '$prova_id' ";
         $sql= $sql . " and resultados.avaliacaos_id= '$prova_id' ";
         $sql= $sql . " and resultados.user_id= users.id ";
-        //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
-        //$sql= $sql . " and ucs_users.user_id= users.id ";
-        $sql= $sql . " order by ucs.nomeu ";
+        $sql= $sql . " order by users.name ";
         $qualificacoes= DB::select($sql);
          return Excel::download(new ResultadosExport($qualificacoes), 'Resultados.csv');
      }
      public function exportpdf($prova_id)
      {
         $user=auth()->user();
-        //$quest=Questoes::all();
-        //$quest=$prova;
+
         $tema=Tema::all();
         $sql= "select distinct avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.pontuacao_min, avaliacaos.uc_id,
                 users.id as idut, users.name, ucs.id, ucs.nomeu,resultados.id as idresultado, resultados.avaliacaos_id, resultados.pontuacaototal_aluno, resultados.status from avaliacaos, ucs, users, resultados  ";
@@ -625,16 +489,13 @@ class ExameController extends Controller
         $sql= $sql . " and avaliacaos.id= '$prova_id' ";
         $sql= $sql . " and resultados.avaliacaos_id= '$prova_id' ";
         $sql= $sql . " and resultados.user_id= users.id ";
-        //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
-        //$sql= $sql . " and ucs_users.user_id= users.id ";
-        $sql= $sql . " order by ucs.nomeu ";
+        $sql= $sql . " order by users.name ";
         $qualificacoes= DB::select($sql);
          return Excel::download(new ResultadosExport($qualificacoes), 'Resultados.pdf');
      }
 
 
      public function showqualificacao(){
-        // Apresentação dos resultados ambiente aluno
         $user=auth()->user();
         $quest=Questoes::all();
         $tema=Tema::all();
@@ -642,9 +503,6 @@ class ExameController extends Controller
         $sql= $sql . " Where resultados.user_id= '$user->id' ";
         $sql= $sql . " and avaliacaos.uc_id= ucs.id ";
         $sql= $sql . " and avaliacaos.id= resultados.avaliacaos_id ";
-
-        //$sql= $sql . " and ucs_users.uc_id= ucs.id ";
-        //$sql= $sql . " and ucs_users.user_id= users.id ";
         $sql= $sql . " order by ucs.nomeu ";
         $notas= DB::select($sql);
 
@@ -653,47 +511,8 @@ class ExameController extends Controller
      }
 
      public function storeresultado(Request $request){
-        //$modelo= Modelo();
         $resultado= new Resultados();
         $prov= $request->prova_id;
-        /*$sql= "select avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.data, avaliacaos.hora, avaliacaos.duracao, avaliacaos.pontuacao_min, ucs.id as iduc, ucs.nomeu, users.id as idut, users.name, modelos.id as idmo, modelos.user_id as muid, modelos.avaliacaos_id, modelos.respostam, modelos.pontuacaom,  questoes.id as idque, questoes.respostaq, questoes.pontuacao_questao from avaliacaos_questoes, questoes, modelos, users, ucs, avaliacaos ";
-        $sql= $sql . " where avaliacaos.uc_id= ucs.id ";
-        $sql= $sql . " and questoes.uc_id= ucs.id ";
-        $sql= $sql . " and avaliacaos.users_id= users.id ";*/
-
-        //$sql= $sql . " and avaliacaos_questoes.avaliacaos_id= avaliacaos.id ";
-       // $sql= $sql . " and avaliacaos_questoes.questoes_id= questoes.id ";
-      /* $sql= $sql . " and modelos.user_id= users.id ";
-       $sql= $sql . " and avaliacaos.id= '$prov' ";
-       $sql= $sql . " and modelos.avaliacaos_id= '$prov'  ";*/
-        //$sql= $sql . " and modelos.avaliacaos_id=avaliacaos.id  ";
-
-        //$sql= $sql . " group by idav, idut, users.name, idmo, idque, avaliacaos_questoes.id ";
-
-       /* $sql= "select avaliacaos.id, avaliacaos.tipoa, avaliacaos.pontuacao_min,
-               avaliacaos.uc_id, avaliacaos.users_id, users.id, users.name,
-               modelos.id, modelos.avaliacaos_id, modelos.respostam, modelos.pontuacaom,
-               modelos.user_id from avaliacoes as av
-               left join ucs on av.uc_id=ucs.id
-               left join users on av.users_id=users.id
-               left join modelos as mo on (mo.avaliacaos_id=av.id and mo.user_id=users.id)
-               where  (av.id= '$prov' and mo.avaliacaos_id= '$prov') ";*/
-        /*$sql= $sql . " where avaliacaos.uc_id= ucs.id ";
-            $sql= $sql . " and questoes.uc_id= ucs.id ";
-            $sql= $sql . " and avaliacaos.users_id= users.id ";*/
-        //$sql= $sql . " and avaliacaos_questoes.avaliacaos_id= avaliacaos.id ";
-       // $sql= $sql . " and avaliacaos_questoes.questoes_id= questoes.id ";
-       /*$sql= $sql . " and modelos.user_id= users.id ";
-            $sql= $sql . " and avaliacaos.id= '$prov' ";
-            $sql= $sql . " and modelos.avaliacaos_id= '$prov'  ";
-            $sql= $sql . " order by users.id ";*/
-
-
-        /*$sql= "select * from resultados, users ";
-        $sql= $sql . " where resultados.avaliacaos_id= '$prov' ";
-        $sql= $sql . " and resultados.user_id= users.id ";
-        $sql= $sql . " order by resultados.id ";
-        $modelagem= DB::delete($sql);*/
 
         $sql= "select avaliacaos.id as idav, avaliacaos.tipoa, avaliacaos.pontuacao_min, avaliacaos.uc_id, users.id as idut, users.name, ucs.id, ucs.nomeu, ucs_users.uc_id as uuuci, ucs_users.user_id as uuusi from avaliacaos, users, ucs, ucs_users";
         $sql= $sql . " where avaliacaos.id= '$prov' ";
@@ -708,15 +527,12 @@ class ExameController extends Controller
         $sql= $sql . " and modelos.user_id= users.id ";
         $sql= $sql . " order by users.id ";
         $modelagem= DB::select($sql);
-        //$provado= $prova_id;
-        //$av= $qualificacoes->idav;
         foreach ($qualificacoes as $key => $qua) {
             $somaponto=0;
             $av= $qua->idav;
             $ucnome=$qua->nomeu;
             $usuario= $qua->idut;
             $nome=$qua->name;
-            //$mod= $qua->idmo;
 
                 foreach ($modelagem as $key => $mode) {
                     $mod= 0;
@@ -724,7 +540,6 @@ class ExameController extends Controller
                     {
                         $somaponto+=$mode->pontuacaom;
                     }
-                    //$mod= $mode->idmo;
                 }
             if ($somaponto>=$qua->pontuacao_min) {
                 $estado= 'Apto';
@@ -736,11 +551,9 @@ class ExameController extends Controller
             $savedado= [
                 'avaliacaos_id' => $av,
                 'user_id' => $usuario,
-                //'modelo_id' => $mod,
                 'pontuacaototal_aluno' => $somaponto,
                 'status'=> $estado
             ];
-            //$modelo->save();
             $resultado::insert($savedado);
         }
 
@@ -766,12 +579,6 @@ class ExameController extends Controller
         $inscricao->save();
 
         return redirect('dashboard')->with('msg', 'Armazenado com sucesso!');
-
-    }
-
-    public function uploadfile(Request $request){
-        $request->file('file')->store('docs');
-        return redirect('dashboard');
 
     }
 

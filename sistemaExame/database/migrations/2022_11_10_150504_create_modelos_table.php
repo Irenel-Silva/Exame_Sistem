@@ -17,12 +17,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('avaliacaos_id')
             ->constrained('avaliacaos');
-            //$table->string('qa');// qa-> Questão A
-            $table->string('respostam');
+            $table->string('respostam')->nullable();
             $table->float('pontuacaom');
 
             $table->foreignId('user_id')
             ->constrained('users');
+            $table->foreignId('questao_id')
+            ->constrained('questoes');
 
             $table->timestamps();
         });
@@ -41,6 +42,9 @@ return new class extends Migration
             ->onDelete('cascade');
             $table->foreignId('user_id')
             ->constrained('users')
+            ->onDelete('cascade');
+            $table->foreignId('questao_id')
+            ->constrained('questoes')
             ->onDelete('cascade');
 
 

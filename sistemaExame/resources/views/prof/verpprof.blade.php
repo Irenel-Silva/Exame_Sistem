@@ -19,10 +19,9 @@
                         <th scope="col">Duração</th>
                         <th scope="col">Status</th>
                         <th scope="col">Atribuir resultado</th>
-                        <th scope="col">Copiar Link Prova</th>
-                        <th scope="col">Upload Prova</th>
-                        <th scope="col">CRUD Prova</th>
-                        <!--<th scope="col">CRUD Questões</th>-->
+                        <th scope="col">Visualizar Avaliação</th>
+                        <th scope="col">CRUD Avaliação</th>
+                        <th scope="col">Visualizar Resultados</th>
                     </tr>
 
                 </thead>
@@ -37,7 +36,7 @@
                                 <td>{{ $q->duracao }}</td>
                                 <?php $hoje= strtotime(date("Y-m-d")); ?>
 
-                                @if($q->data > $hoje )
+                                @if($q->data >= $hoje )
                                     <td><a style="color: aquamarine;">Por fazer</a></td>
                                     <td><a href="/resultados/addresultado/{{ $q->idav }}">Disponível</a></td>
                                 @else
@@ -45,17 +44,16 @@
                                     <td><a style="color: darkred;"> Indisponível</a></td>
                                 @endif
                                 <td><a href="/alunos/provaaluno/{{ $q->idav }}">link</a></td>
-                                <td>
-                                    <form action="/prof" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="file" name="file"/>
-                                        <input type="submit"  class="btn btn-primary" name="acao" value="Upload"/>
-                                    </form>
 
-                                </td>
 
                                 <td>
                                     <a href="/prova/editarprova/{{ $q->idav }}" class="btn btn-info edit-btn"><ion-icon name="create-outline"></ion-icon>Editar</a>
+                                </td>
+
+                                <td>
+
+                                    <a href="/resultados/resultado/{{ $q->idav }}">Qualificação</a>
+                                    
                                 </td>
                             </tr>
                         @endforeach
