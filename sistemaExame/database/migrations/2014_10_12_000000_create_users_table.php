@@ -23,8 +23,8 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
-            $table->string('numero_aluno')->nullable();
-            $table->string('numero_professor')->nullable();
+            $table->string('numero_aluno')->unique()->nullable();
+            $table->string('numero_professor')->unique()->nullable();
         });
     }
 

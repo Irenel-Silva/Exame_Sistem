@@ -522,17 +522,31 @@ class ExameController extends Controller
         $sql= $sql . " order by users.id ";
         $qualificacoes= DB::select($sql);
 
-        $sql= "select modelos.id as idmo, modelos.avaliacaos_id, modelos.respostam, modelos.pontuacaom, modelos.user_id as muid, users.id as idut, users.name from modelos, users ";
+        $sql= "select modelos.id as idmo, modelos.avaliacaos_id, modelos.respostam, modelos.pontuacaom, modelos.user_id as muid, modelos.questao_id, users.id as idut, users.name from modelos, users ";
         $sql= $sql . " where modelos.avaliacaos_id= '$prov' ";
         $sql= $sql . " and modelos.user_id= users.id ";
         $sql= $sql . " order by users.id ";
         $modelagem= DB::select($sql);
-        foreach ($qualificacoes as $key => $qua) {
-            $somaponto=0;
-            $av= $qua->idav;
-            $ucnome=$qua->nomeu;
-            $usuario= $qua->idut;
-            $nome=$qua->name;
+        $sql= "select * from resultados, users ";
+        $sql= $sql . " where resultados.avaliacaos_id= '$prov' ";
+        $sql= $sql . " and resultados.user_id= users.id ";
+        $sql= $sql . " order by resultados.id ";
+        $result= DB::select($sql);
+
+
+        foreach ($qualificacoes as $key => $qua){
+            $cont=0;
+            foreach($result as $re){
+                if($qua->idut == $re->user_id){
+                    $cont++;
+                }
+            }
+            if($cont==0){
+                $somaponto=0;
+                $av= $qua->idav;
+                $ucnome=$qua->nomeu;
+                $usuario= $qua->idut;
+                $nome=$qua->name;
 
                 foreach ($modelagem as $key => $mode) {
                     $mod= 0;
@@ -541,25 +555,25 @@ class ExameController extends Controller
                         $somaponto+=$mode->pontuacaom;
                     }
                 }
-            if ($somaponto>=$qua->pontuacao_min) {
-                $estado= 'Apto';
+                if ($somaponto>=$qua->pontuacao_min) {
+                    $estado= 'Apto';
+                }
+                else {
+                    $estado= 'Napto';
+                }
+
+
+                $savedado= [
+                    'avaliacaos_id' => $av,
+                    'user_id' => $usuario,
+                    'pontuacaototal_aluno' => $somaponto,
+                    'status'=> $estado
+                ];
+                $resultado::insert($savedado);
             }
-            else {
-                $estado= 'Napto';
-            }
 
-            $savedado= [
-                'avaliacaos_id' => $av,
-                'user_id' => $usuario,
-                'pontuacaototal_aluno' => $somaponto,
-                'status'=> $estado
-            ];
-            $resultado::insert($savedado);
-        }
-
-
-        return redirect('dashboard')->with('msg', 'Armazenado com sucesso!');
-
+         }
+         return redirect('dashboard')->with('msg', 'Armazenado com sucesso!');
      }
 
 
