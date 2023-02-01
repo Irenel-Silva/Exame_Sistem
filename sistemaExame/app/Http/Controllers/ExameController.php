@@ -81,8 +81,10 @@ class ExameController extends Controller
 
      public function quest(){
             $user= User::all();
-            $ucs= Uc::all();
-            $tema= Tema::all();
+            //$ucs= Uc::all();
+            //$tema= Tema::all();
+            $ucs= Uc::orderBy('nomeu', 'ASC')->get();
+            $tema= Tema::Where('id', '=',0)->orderBy('titulo', 'ASC')->get();
         return view('questionarios.questo', ['user'=>$user, 'ucs'=>$ucs, 'tema'=>$tema]);
      }
 
@@ -142,6 +144,19 @@ class ExameController extends Controller
         $quest= Questoes::Where('id', '=',0)->orderBy('questao', 'ASC')->get();
 
         return view('prof.addqa', ['quest'=>$quest, 'temat'=>$temat,'avaliar'=>$avaliar, 'ucs'=>$ucs/*, 'qquestoes'=>$qquestoes*/]);
+
+     }
+
+
+     public function load_uctem(Request $request){
+        $dataform= $request->all();
+        $uc_id= $dataform['uc_id'];
+        $sql= "select * from temas ";
+        $sql= $sql . " Where temas.uc_id= '$uc_id' ";
+        $sql= $sql . " order by temas.titulo";
+        $temas= DB::select($sql);
+
+        return view('prof.uctema_ajax', ['temas'=>$temas]);
 
      }
 
@@ -244,7 +259,7 @@ class ExameController extends Controller
 
 
      public function listaquest($id){
-        $sql= "select distinct ucs.id, ucs.nomeu, questoes.id as qid, questoes.questao, questoes.respostaq  from ucs, questoes ";
+        $sql= "select distinct ucs.id, ucs.nomeu, questoes.id as qid, questoes.tipoq, questoes.questao, questoes.respostaq  from ucs, questoes ";
         $sql= $sql . " Where ucs.id= '$id' ";
         $sql= $sql . " and ucs.id= questoes.uc_id ";
         $sql= $sql . " order by questoes.id ";

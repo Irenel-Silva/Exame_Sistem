@@ -14,7 +14,7 @@
 
 <div id="event-create-container" class="col-md-6 offset-md-3">
     <h1>Questões</h1>
-    <form action="/questionarios" method="POST">
+    <form action="/questionarios" method="POST" id="idquesto" data-uctem-url="{{ route('load_uctem') }}">
       @csrf
 
       <div class="form-group">
@@ -85,4 +85,23 @@
         });
 
     </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#uc_id").change(function() {
+                const url= $('#idquesto').attr("data-uctem-url");
+                ucid= $(this).val();
+                $.ajax({
+                    url : url,
+                    data: {
+                        'uc_id': ucid,
+                    },
+                    success: function(data){
+                        $("#tema_id").html(data);
+                    }
+                });
+            });
+        });
+    </script>
+
+
 @endsection

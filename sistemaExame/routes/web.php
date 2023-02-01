@@ -28,6 +28,7 @@ Route::get('/questionarios/questo', [ExameController::class, 'quest'])->middlewa
 Route::post('/questionarios', [ExameController::class, 'salvaquestao']);
 
 Route::get('/prof/addqa', [ExameController::class, 'prova'])->middleware('auth');
+Route::get('load_uctem', [ExameController::class, 'load_uctem'])->name('load_uctem');
 Route::get('load_avtem', [ExameController::class, 'load_avtem'])->name('load_avtem');
 Route::get('load_tem', [ExameController::class, 'load_tem'])->name('load_tem');
 Route::get('load_quest', [ExameController::class, 'load_quest'])->name('load_quest');

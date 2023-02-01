@@ -1,3 +1,4 @@
+
 <table class="table">
     <thead>
         <tr>
@@ -24,3 +25,4 @@
             @endforeach
     </tbody>
 </table>
+

@@ -14,6 +14,7 @@
                     <tr>
                         <th scope="col"># </th>
                         <th scope="col">Id</th>
+                        <th scope="col">tipoq</th>
                         <th scope="col">Questão</th>
                         <th scope="col">Resposta</th>
                         <th scope="col">link</th>
@@ -26,6 +27,7 @@
                             <tr>
                                 <td scropt="row">{{$loop->index +1}}</td>
                                 <td>{{ $q->qid }}</td>
+                                <td>{{ $q->tipoq }}</td>
                                 <td>{{ $q->questao }}</td>
                                 <td>{{ $q->respostaq }}</td>
                                 <td><a href="/questionarios/editquest/{{ $q->qid }}" class="btn btn-info edit-btn"><ion-icon name="create-outline"></ion-icon>Editar</a></td>
